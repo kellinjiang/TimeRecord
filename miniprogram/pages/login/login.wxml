@@ -1,0 +1,84 @@
+<!--登录页面-->
+<view class="login-container">
+  <!-- 顶部 Logo 区域 -->
+  <view class="header">
+    <view class="logo-container">
+      <view class="logo">⏰</view>
+      <view class="app-name">时间记录</view>
+      <view class="app-slogan">用声音记录时间</view>
+    </view>
+  </view>
+
+  <!-- 用户信息填写区域 -->
+  <view class="form-container">
+    <view class="form-title">完善个人信息</view>
+
+    <!-- 头像选择 -->
+    <view class="avatar-section">
+      <view class="section-label">选择头像</view>
+      <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+        <image
+          wx:if="{{avatarUrl}}"
+          class="avatar-image"
+          src="{{avatarUrl}}"
+          mode="aspectFill"
+        ></image>
+        <view wx:else class="avatar-placeholder">
+          <text class="avatar-placeholder-icon">👤</text>
+          <text class="avatar-placeholder-text">点击选择</text>
+        </view>
+      </button>
+      <view class="section-tips">点击头像选择您的个人头像</view>
+    </view>
+
+    <!-- 昵称输入 -->
+    <view class="nickname-section">
+      <view class="section-label">输入昵称</view>
+      <input
+        class="nickname-input"
+        type="nickname"
+        placeholder="请输入您的昵称"
+        value="{{nickName}}"
+        bindinput="onNicknameInput"
+        bindblur="onNicknameBlur"
+        maxlength="20"
+      />
+      <view class="section-tips">最多20个字符</view>
+    </view>
+  </view>
+
+  <!-- 功能介绍 -->
+  <view class="features">
+    <view class="feature-item">
+      <text class="feature-icon">🎤</text>
+      <text class="feature-text">语音录入，自动转文字</text>
+    </view>
+    <view class="feature-item">
+      <text class="feature-icon">📊</text>
+      <text class="feature-text">数据统计，可视化分析</text>
+    </view>
+    <view class="feature-item">
+      <text class="feature-icon">🏷️</text>
+      <text class="feature-text">标签管理，快速分类</text>
+    </view>
+  </view>
+
+  <!-- 登录按钮 -->
+  <view class="footer">
+    <button
+      class="login-btn"
+      bindtap="handleLogin"
+      hover-class="login-btn-hover"
+      disabled="{{!canLogin}}"
+    >
+      <text class="login-btn-text">{{canLogin ? '开始使用' : '请完善信息'}}</text>
+    </button>
+
+    <view class="privacy-tips">
+      <text class="tips-text">登录即表示同意</text>
+      <text class="tips-link">《用户协议》</text>
+      <text class="tips-text">和</text>
+      <text class="tips-link">《隐私政策》</text>
+    </view>
+  </view>
+</view>

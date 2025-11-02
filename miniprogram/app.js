@@ -14,8 +14,69 @@ App({
     // 获取用户信息
     this.globalData.userInfo = null;
 
+    // 检查登录状态
+    this.checkLoginStatus();
+
     // 首次启动时检查并填充睡眠时间
     this.checkAndFillSleepTime();
+  },
+
+  // 检查登录状态
+  checkLoginStatus() {
+    const db = wx.cloud.database();
+
+    db.collection('users')
+      .where({
+        _openid: '{openid}'  // 云开发会自动替换为当前用户的openid
+      })
+      .limit(1)
+      .get({
+        success: (res) => {
+          if (res.data.length > 0) {
+            // 用户已登录
+            console.log('用户已登录', res.data[0]);
+
+            // 保存用户信息到全局变量
+            this.globalData.userInfo = res.data[0];
+
+            // 更新最后登录时间
+            this.updateLastLoginTime(res.data[0]._id);
+          } else {
+            // 用户未登录，跳转到登录页
+            console.log('用户未登录，跳转到登录页');
+            wx.reLaunch({
+              url: '/pages/login/login'
+            });
+          }
+        },
+        fail: (err) => {
+          console.error('检查登录状态失败', err);
+          // 出错时也跳转到登录页
+          wx.reLaunch({
+            url: '/pages/login/login'
+          });
+        }
+      });
+  },
+
+  // 更新最后登录时间
+  updateLastLoginTime(userId) {
+    const db = wx.cloud.database();
+
+    db.collection('users')
+      .doc(userId)
+      .update({
+        data: {
+          lastLoginTime: new Date(),
+          updateTime: new Date()
+        },
+        success: () => {
+          console.log('最后登录时间更新成功');
+        },
+        fail: (err) => {
+          console.error('最后登录时间更新失败', err);
+        }
+      });
   },
 
   onShow() {
@@ -57,6 +118,7 @@ App({
 
   globalData: {
     userInfo: null,
+    isLogout: false,  // 退出登录标记
     lastSleepCheckTime: 0,  // 上次检查睡眠时间的时间戳
     // 默认标签配置
     defaultTags: [
