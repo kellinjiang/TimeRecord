@@ -1,0 +1,49 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/record-edit/record-edit",
+    "pages/daily/daily",
+    "pages/weekly/weekly",
+    "pages/monthly/monthly",
+    "pages/settings/settings",
+    "pages/tag-manage/tag-manage",
+    "pages/template-manage/template-manage",
+    "pages/data-stats/data-stats",
+    "pages/about/about"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#1a1a1a",
+    "navigationBarTitleText": "时间记录",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#000000",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#1AAD19",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "录音"
+      },
+      {
+        "pagePath": "pages/daily/daily",
+        "text": "日视图"
+      },
+      {
+        "pagePath": "pages/weekly/weekly",
+        "text": "周视图"
+      },
+      {
+        "pagePath": "pages/settings/settings",
+        "text": "我的"
+      }
+    ]
+  },
+  "cloud": true,
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

@@ -1,0 +1,212 @@
+<!--数据统计页面-->
+<view class="container">
+
+  <!-- 时间维度选择 -->
+  <view class="time-tabs">
+    <view
+      class="time-tab {{currentPeriod === 'today' ? 'active' : ''}}"
+      bindtap="switchPeriod"
+      data-period="today"
+    >
+      <text>今日</text>
+    </view>
+    <view
+      class="time-tab {{currentPeriod === 'week' ? 'active' : ''}}"
+      bindtap="switchPeriod"
+      data-period="week"
+    >
+      <text>本周</text>
+    </view>
+    <view
+      class="time-tab {{currentPeriod === 'month' ? 'active' : ''}}"
+      bindtap="switchPeriod"
+      data-period="month"
+    >
+      <text>本月</text>
+    </view>
+    <view
+      class="time-tab {{currentPeriod === 'all' ? 'active' : ''}}"
+      bindtap="switchPeriod"
+      data-period="all"
+    >
+      <text>全部</text>
+    </view>
+  </view>
+
+  <!-- 核心数据指标 -->
+  <view class="stats-overview">
+    <view class="stat-card primary">
+      <view class="stat-icon">📝</view>
+      <view class="stat-info">
+        <view class="stat-value">{{stats.totalRecords}}</view>
+        <view class="stat-label">记录数</view>
+      </view>
+    </view>
+
+    <view class="stat-card success">
+      <view class="stat-icon">⏱️</view>
+      <view class="stat-info">
+        <view class="stat-value">{{stats.totalHours}}h</view>
+        <view class="stat-label">总时长</view>
+      </view>
+    </view>
+
+    <view class="stat-card warning">
+      <view class="stat-icon">📅</view>
+      <view class="stat-info">
+        <view class="stat-value">{{stats.activeDays}}</view>
+        <view class="stat-label">活跃天数</view>
+      </view>
+    </view>
+
+    <view class="stat-card info">
+      <view class="stat-icon">⏰</view>
+      <view class="stat-info">
+        <view class="stat-value">{{stats.avgHours}}h</view>
+        <view class="stat-label">日均时长</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 标签分布 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">🏷️ 标签分布</text>
+      <text class="section-subtitle">Top 5</text>
+    </view>
+
+    <view class="tag-stats" wx:if="{{tagStats.length > 0}}">
+      <view class="tag-stat-item" wx:for="{{tagStats}}" wx:key="name">
+        <view class="tag-stat-header">
+          <view class="tag-stat-info">
+            <text class="tag-icon">{{item.icon}}</text>
+            <text class="tag-name">{{item.name}}</text>
+          </view>
+          <view class="tag-stat-value">
+            <text class="tag-hours">{{item.hours}}h</text>
+            <text class="tag-percentage">{{item.percentage}}%</text>
+          </view>
+        </view>
+        <view class="tag-progress-bar">
+          <view
+            class="tag-progress-fill"
+            style="width: {{item.percentage}}%; background-color: {{item.color}};"
+          ></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-hint" wx:if="{{tagStats.length === 0}}">
+      <text>暂无数据</text>
+    </view>
+  </view>
+
+  <!-- 时间趋势 -->
+  <view class="section" wx:if="{{currentPeriod !== 'today'}}">
+    <view class="section-header">
+      <text class="section-title">📈 时间趋势</text>
+      <text class="section-subtitle">{{trendLabel}}</text>
+    </view>
+
+    <view class="trend-chart" wx:if="{{trendData.length > 0}}">
+      <view class="chart-container">
+        <view class="chart-bars">
+          <view class="chart-bar-item" wx:for="{{trendData}}" wx:key="label">
+            <view class="bar-container">
+              <view
+                class="bar-fill {{item.isToday ? 'highlight' : ''}}"
+                style="height: {{item.percentage}}%;"
+              >
+                <text class="bar-value" wx:if="{{item.hours > 0}}">{{item.hours}}h</text>
+              </view>
+            </view>
+            <text class="bar-label {{item.isToday ? 'today' : ''}}">{{item.label}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-hint" wx:if="{{trendData.length === 0}}">
+      <text>暂无数据</text>
+    </view>
+  </view>
+
+  <!-- 记录分布（按小时） -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">⏰ 时段分布</text>
+      <text class="section-subtitle">24小时</text>
+    </view>
+
+    <view class="hour-distribution" wx:if="{{hourDistribution.length > 0}}">
+      <view class="hour-item" wx:for="{{hourDistribution}}" wx:key="hour">
+        <text class="hour-label">{{item.hour}}:00</text>
+        <view class="hour-bar-bg">
+          <view
+            class="hour-bar-fill"
+            style="width: {{item.percentage}}%;"
+          ></view>
+        </view>
+        <text class="hour-count">{{item.count}}</text>
+      </view>
+    </view>
+
+    <view class="empty-hint" wx:if="{{hourDistribution.length === 0}}">
+      <text>暂无数据</text>
+    </view>
+  </view>
+
+  <!-- 星期分布 -->
+  <view class="section" wx:if="{{currentPeriod !== 'today'}}">
+    <view class="section-header">
+      <text class="section-title">📊 星期分布</text>
+      <text class="section-subtitle">工作日 vs 周末</text>
+    </view>
+
+    <view class="weekday-distribution" wx:if="{{weekdayStats.length > 0}}">
+      <view class="weekday-item" wx:for="{{weekdayStats}}" wx:key="day">
+        <view class="weekday-header">
+          <text class="weekday-name">{{item.name}}</text>
+          <text class="weekday-hours">{{item.hours}}h</text>
+        </view>
+        <view class="weekday-bar-bg">
+          <view
+            class="weekday-bar-fill {{item.isWeekend ? 'weekend' : 'weekday'}}"
+            style="width: {{item.percentage}}%;"
+          ></view>
+        </view>
+        <text class="weekday-count">{{item.count}}条记录</text>
+      </view>
+    </view>
+
+    <view class="empty-hint" wx:if="{{weekdayStats.length === 0}}">
+      <text>暂无数据</text>
+    </view>
+  </view>
+
+  <!-- 总结卡片 -->
+  <view class="summary-card">
+    <view class="summary-header">
+      <text class="summary-icon">💡</text>
+      <text class="summary-title">数据洞察</text>
+    </view>
+    <view class="summary-content">
+      <view class="summary-item" wx:if="{{stats.mostActiveDay}}">
+        <text class="summary-label">最活跃的一天：</text>
+        <text class="summary-value">{{stats.mostActiveDay}}</text>
+      </view>
+      <view class="summary-item" wx:if="{{stats.topTag}}">
+        <text class="summary-label">最常用标签：</text>
+        <text class="summary-value">{{stats.topTag}}</text>
+      </view>
+      <view class="summary-item" wx:if="{{stats.avgRecordsPerDay}}">
+        <text class="summary-label">日均记录数：</text>
+        <text class="summary-value">{{stats.avgRecordsPerDay}}条</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空白占位 -->
+  <view style="height: 40rpx;"></view>
+
+</view>

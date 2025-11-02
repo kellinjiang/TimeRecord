@@ -1,0 +1,185 @@
+<!--pages/daily/daily.wxml-->
+<view class="container">
+  <!-- 顶部日期切换 -->
+  <view class="date-header">
+    <view class="date-nav" bindtap="prevDay">
+      <text class="nav-arrow">‹</text>
+    </view>
+    <view class="date-picker" bindtap="showDatePicker">
+      <text class="current-date">{{currentDateStr}}</text>
+      <text class="week-day">{{weekDayStr}}</text>
+    </view>
+    <view class="date-nav" bindtap="nextDay">
+      <text class="nav-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 今日统计卡片 -->
+  <view class="stats-card">
+    <view class="stats-title">📊 今日统计</view>
+
+    <!-- 记录数统计 -->
+    <view class="stats-summary">
+      <text class="summary-text">今日共记录 </text>
+      <text class="summary-count">{{stats.totalRecords}}</text>
+      <text class="summary-text"> 条</text>
+      <text class="summary-divider">|</text>
+      <text class="summary-text">总时长 </text>
+      <text class="summary-hours">{{stats.totalHours}}h</text>
+    </view>
+
+    <!-- 标签时长柱状图 -->
+    <view class="tag-chart-section" wx:if="{{stats.tagStats.length > 0}}">
+      <view class="chart-title">🏷️ 标签时长分布</view>
+      <view class="tag-chart-container">
+        <!-- Y轴刻度 -->
+        <view class="y-axis">
+          <view class="y-axis-item" wx:for="{{stats.yAxisLabels}}" wx:key="*this">
+            <text class="y-axis-label">{{item}}h</text>
+            <view class="y-axis-line"></view>
+          </view>
+        </view>
+
+        <!-- 柱状图 -->
+        <view class="tag-chart-bars">
+          <view class="tag-chart-item" wx:for="{{stats.tagStats}}" wx:key="name">
+            <view class="bar-wrapper">
+              <view
+                class="bar-fill"
+                style="height: {{item.barHeight}}%; background-color: {{item.color}};"
+              >
+                <text class="bar-value" wx:if="{{item.hours > 0}}">{{item.hours}}h</text>
+              </view>
+            </view>
+            <view class="bar-label">
+              <text class="bar-icon">{{item.icon}}</text>
+              <text class="bar-name">{{item.name}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 记录表格 -->
+    <view class="record-table-section" wx:if="{{records.length > 0}}">
+      <view class="chart-title">📝 时间记录</view>
+      <view class="record-table">
+        <view class="table-row table-header">
+          <text class="col-time">时间段</text>
+          <text class="col-content">内容</text>
+          <text class="col-duration">时长</text>
+          <text class="col-tag">标签</text>
+        </view>
+        <view class="table-row" wx:for="{{records}}" wx:key="_id" bindtap="editRecord" data-id="{{item._id}}">
+          <text class="col-time">{{item.startTimeStr}} - {{item.endTimeStr || '待定'}}</text>
+          <text class="col-content">{{item.content}}</text>
+          <text class="col-duration">{{item.durationStr || '-'}}</text>
+          <view class="col-tag">
+            <text wx:for="{{item.tags}}" wx:for-item="tag" wx:key="name" class="mini-tag" style="background-color: {{tag.color}}20; color: {{tag.color}};">{{tag.icon}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 时间轴 -->
+  <view class="timeline-section">
+    <view class="section-header">
+      <text class="section-title">⏰ 时间轴</text>
+      <text class="record-count">{{records.length}} 条记录</text>
+    </view>
+
+    <!-- 记录列表 -->
+    <view class="timeline-list" wx:if="{{records.length > 0}}">
+      <view
+        class="timeline-item"
+        wx:for="{{records}}"
+        wx:key="_id"
+        bindtap="editRecord"
+        data-id="{{item._id}}"
+      >
+        <!-- 时间线 -->
+        <view class="timeline-line">
+          <view class="timeline-dot"></view>
+          <view class="timeline-connector" wx:if="{{index < records.length - 1}}"></view>
+        </view>
+
+        <!-- 内容卡片 -->
+        <view class="record-card">
+          <view class="record-header">
+            <view class="record-time">
+              <text class="time-start">{{item.startTimeStr}}</text>
+              <text class="time-separator">-</text>
+              <text class="time-end">{{item.endTimeStr || '进行中'}}</text>
+            </view>
+            <view class="record-duration" wx:if="{{item.duration}}">
+              <text>{{item.durationStr}}</text>
+            </view>
+          </view>
+
+          <view class="record-content">
+            <text>{{item.content}}</text>
+          </view>
+
+          <!-- 录音播放按钮 -->
+          <view class="record-audio" wx:if="{{item.audioPath}}" bindtap="playAudio" data-id="{{item._id}}" data-path="{{item.audioPath}}" catchtap="stopPropagation">
+            <text class="audio-icon">{{item.isPlaying ? '⏸' : '🎤'}}</text>
+            <text class="audio-text">{{item.isPlaying ? '播放中...' : '点击播放录音'}}</text>
+          </view>
+
+          <view class="record-tags" wx:if="{{item.tags && item.tags.length > 0}}">
+            <view
+              class="tag"
+              wx:for="{{item.tags}}"
+              wx:for-item="tag"
+              wx:key="name"
+              style="background-color: {{tag.color}}20; color: {{tag.color}}"
+            >
+              <text>{{tag.icon}} {{tag.name}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{records.length === 0}}">
+      <text class="empty-icon">📝</text>
+      <text class="empty-text">今天还没有记录</text>
+      <text class="empty-hint">点击首页录音按钮开始记录</text>
+    </view>
+  </view>
+
+  <!-- 每日总结 -->
+  <view class="summary-section">
+    <view class="section-header">
+      <text class="section-title">📝 今日总结</text>
+      <text class="summary-hint" wx:if="{{!summary.content}}">点击输入</text>
+    </view>
+    <view class="summary-input" bindtap="editSummary">
+      <textarea
+        class="summary-textarea"
+        placeholder="写下今天的收获和思考..."
+        value="{{summary.content}}"
+        bindinput="onSummaryInput"
+        bindblur="saveSummary"
+        maxlength="500"
+        auto-height
+        cursor-spacing="20"
+      />
+      <view class="summary-char-count" wx:if="{{summary.content}}">
+        <text>{{summary.content.length}}/500</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 日期选择器（隐藏的picker） -->
+<picker
+  mode="date"
+  value="{{currentDate}}"
+  bindchange="onDateChange"
+  id="datePicker"
+  hidden
+>
+</picker>

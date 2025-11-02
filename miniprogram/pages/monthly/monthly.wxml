@@ -1,0 +1,164 @@
+<!--pages/monthly/monthly.wxml-->
+<view class="container">
+  <!-- 顶部月份导航 -->
+  <view class="month-header">
+    <view class="month-nav" bindtap="prevMonth">
+      <text class="nav-arrow">‹</text>
+    </view>
+    <view class="month-picker">
+      <text class="current-month">{{monthStr}}</text>
+      <text class="year-label">{{yearStr}}</text>
+    </view>
+    <view class="month-nav" bindtap="nextMonth">
+      <text class="nav-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 本月统计卡片 -->
+  <view class="stats-card">
+    <view class="stats-title">📊 本月统计</view>
+    <view class="stats-content">
+      <view class="stat-item">
+        <text class="stat-value">{{stats.totalRecords}}</text>
+        <text class="stat-label">记录数</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">{{stats.totalHours}}h</text>
+        <text class="stat-label">总时长</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">{{stats.activeDays}}</text>
+        <text class="stat-label">活跃天数</text>
+      </view>
+    </view>
+
+    <!-- 标签分布条形图 -->
+    <view class="tags-distribution" wx:if="{{stats.tagStats.length > 0}}">
+      <view
+        class="tag-bar"
+        wx:for="{{stats.tagStats}}"
+        wx:key="name"
+        style="width: {{item.percentage}}%; background-color: {{item.color}};"
+      >
+        <text class="tag-bar-label" wx:if="{{item.percentage > 8}}">{{item.icon}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 日历视图 -->
+  <view class="calendar-section">
+    <view class="section-header">
+      <text class="section-title">📅 日历</text>
+      <text class="calendar-hint">点击日期查看详情</text>
+    </view>
+
+    <view class="calendar">
+      <!-- 星期标题 -->
+      <view class="calendar-weekdays">
+        <view class="weekday-label" wx:for="{{weekdayLabels}}" wx:key="*this">{{item}}</view>
+      </view>
+
+      <!-- 日期网格 -->
+      <view class="calendar-days">
+        <view
+          class="day-cell {{item.isCurrentMonth ? '' : 'other-month'}} {{item.isToday ? 'today' : ''}} {{item.hasRecords ? 'has-records' : ''}}"
+          wx:for="{{calendarDays}}"
+          wx:key="dateStr"
+          bindtap="viewDay"
+          data-date="{{item.dateStr}}"
+        >
+          <text class="day-number">{{item.day}}</text>
+          <view class="day-indicator" wx:if="{{item.hasRecords}}">
+            <text class="record-count">{{item.recordCount}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 周趋势图 -->
+  <view class="week-chart-section">
+    <view class="section-header">
+      <text class="section-title">📈 周趋势</text>
+      <text class="chart-unit">小时</text>
+    </view>
+
+    <view class="week-chart" wx:if="{{weekStats.length > 0}}">
+      <view class="week-bar-item" wx:for="{{weekStats}}" wx:key="weekNum">
+        <view class="week-bar-container">
+          <view
+            class="week-bar-fill"
+            style="height: {{item.percentage}}%; background-color: #1AAD19;"
+          >
+            <text class="week-bar-value" wx:if="{{item.hours > 0}}">{{item.hours}}h</text>
+          </view>
+        </view>
+        <text class="week-bar-label">第{{item.weekNum}}周</text>
+        <text class="week-bar-date">{{item.dateRange}}</text>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-chart" wx:if="{{stats.totalRecords === 0}}">
+      <text class="empty-icon">📊</text>
+      <text class="empty-text">本月还没有记录</text>
+    </view>
+  </view>
+
+  <!-- 标签详细统计 -->
+  <view class="tags-section" wx:if="{{stats.tagStats.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">🏷️ 标签统计</text>
+      <text class="tags-count">{{stats.tagStats.length}} 个标签</text>
+    </view>
+
+    <view class="tag-list">
+      <view
+        class="tag-stat-item"
+        wx:for="{{stats.tagStats}}"
+        wx:key="name"
+        wx:if="{{index < 5}}"
+      >
+        <view class="tag-info">
+          <text class="tag-icon">{{item.icon}}</text>
+          <text class="tag-name">{{item.name}}</text>
+        </view>
+        <view class="tag-data">
+          <text class="tag-hours">{{item.hours}}h</text>
+          <text class="tag-percentage">{{item.percentage}}%</text>
+        </view>
+        <view class="tag-bar-bg">
+          <view
+            class="tag-bar-fill"
+            style="width: {{item.percentage}}%; background-color: {{item.color}};"
+          ></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 月总结 -->
+  <view class="summary-section">
+    <view class="section-header">
+      <text class="section-title">📝 月总结</text>
+      <text class="summary-hint" wx:if="{{!summary.content}}">写下本月的收获</text>
+    </view>
+    <view class="summary-input">
+      <textarea
+        class="summary-textarea"
+        placeholder="回顾本月的收获和思考...&#10;&#10;提示：&#10;• 本月完成了哪些重要目标？&#10;• 有什么经验和教训？&#10;• 下月计划是什么？"
+        value="{{summary.content}}"
+        bindinput="onSummaryInput"
+        bindblur="saveSummary"
+        maxlength="1500"
+        auto-height
+        cursor-spacing="20"
+      />
+      <view class="summary-char-count" wx:if="{{summary.content}}">
+        <text>{{summary.content.length}}/1500</text>
+      </view>
+    </view>
+  </view>
+</view>

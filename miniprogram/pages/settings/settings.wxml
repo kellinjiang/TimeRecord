@@ -1,0 +1,141 @@
+<!--pages/settings/settings.wxml-->
+<view class="container">
+  <!-- 用户信息卡片 -->
+  <view class="user-card">
+    <view class="user-avatar">
+      <open-data type="userAvatarUrl"></open-data>
+    </view>
+    <view class="user-info">
+      <view class="user-name">
+        <open-data type="userNickName"></open-data>
+      </view>
+      <view class="user-days">已使用 {{usageDays}} 天</view>
+    </view>
+  </view>
+
+  <!-- 数据统计总览 -->
+  <view class="stats-section">
+    <view class="section-title">📊 数据总览</view>
+    <view class="stats-grid">
+      <view class="stat-card">
+        <view class="stat-value">{{totalStats.totalRecords}}</view>
+        <view class="stat-label">总记录数</view>
+      </view>
+      <view class="stat-card">
+        <view class="stat-value">{{totalStats.totalHours}}h</view>
+        <view class="stat-label">总时长</view>
+      </view>
+      <view class="stat-card">
+        <view class="stat-value">{{totalStats.activeDays}}</view>
+        <view class="stat-label">活跃天数</view>
+      </view>
+      <view class="stat-card">
+        <view class="stat-value">{{totalStats.tagCount}}</view>
+        <view class="stat-label">标签数量</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 标签统计 -->
+  <view class="tags-section" wx:if="{{topTags.length > 0}}">
+    <view class="section-title">🏷️ 常用标签（Top 5）</view>
+    <view class="tag-list">
+      <view
+        class="tag-item"
+        wx:for="{{topTags}}"
+        wx:key="name"
+      >
+        <view class="tag-info">
+          <text class="tag-icon">{{item.icon}}</text>
+          <text class="tag-name">{{item.name}}</text>
+        </view>
+        <view class="tag-hours">{{item.hours}}h</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能入口 -->
+  <view class="menu-section">
+    <view class="section-title">⚙️ 功能管理</view>
+    <view class="menu-list">
+      <!-- 标签管理 -->
+      <view class="menu-item" bindtap="goToTagManage">
+        <view class="menu-left">
+          <view class="menu-icon">🏷️</view>
+          <view class="menu-text">标签管理</view>
+        </view>
+        <view class="menu-right">
+          <text class="menu-badge">{{totalStats.tagCount}}</text>
+          <text class="menu-arrow">›</text>
+        </view>
+      </view>
+
+      <!-- 模板管理 -->
+      <view class="menu-item" bindtap="goToTemplateManage">
+        <view class="menu-left">
+          <view class="menu-icon">📋</view>
+          <view class="menu-text">模板管理</view>
+        </view>
+        <view class="menu-right">
+          <text class="menu-badge">{{templateCount}}</text>
+          <text class="menu-arrow">›</text>
+        </view>
+      </view>
+
+      <!-- 数据统计 -->
+      <view class="menu-item" bindtap="goToDataStats">
+        <view class="menu-left">
+          <view class="menu-icon">📈</view>
+          <view class="menu-text">数据统计</view>
+        </view>
+        <view class="menu-right">
+          <text class="menu-arrow">›</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 其他设置 -->
+  <view class="menu-section">
+    <view class="section-title">🔧 其他</view>
+    <view class="menu-list">
+      <!-- 数据备份 -->
+      <view class="menu-item" bindtap="backupData">
+        <view class="menu-left">
+          <view class="menu-icon">💾</view>
+          <view class="menu-text">数据备份</view>
+        </view>
+        <view class="menu-right">
+          <text class="menu-arrow">›</text>
+        </view>
+      </view>
+
+      <!-- 清除缓存 -->
+      <view class="menu-item" bindtap="clearCache">
+        <view class="menu-left">
+          <view class="menu-icon">🧹</view>
+          <view class="menu-text">清除缓存</view>
+        </view>
+        <view class="menu-right">
+          <text class="menu-desc">{{cacheSize}}</text>
+          <text class="menu-arrow">›</text>
+        </view>
+      </view>
+
+      <!-- 关于我们 -->
+      <view class="menu-item" bindtap="showAbout">
+        <view class="menu-left">
+          <view class="menu-icon">ℹ️</view>
+          <view class="menu-text">关于我们</view>
+        </view>
+        <view class="menu-right">
+          <text class="menu-desc">v1.0.0</text>
+          <text class="menu-arrow">›</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空白占位 -->
+  <view style="height: 40rpx;"></view>
+</view>

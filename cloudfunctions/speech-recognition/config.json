@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "openapi": [
+      "cloudbase.getTempFileURL"
+    ]
+  },
+  "timeout": 30,
+  "envVariables": {}
+}

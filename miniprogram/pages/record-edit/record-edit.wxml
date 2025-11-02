@@ -1,0 +1,121 @@
+<!--pages/record-edit/record-edit.wxml-->
+<view class="container">
+  <!-- 顶部导航栏（已由系统提供） -->
+
+  <!-- 开始时间 -->
+  <view class="form-section">
+    <view class="section-label">
+      <text>⏰ 开始时间</text>
+    </view>
+    <picker mode="time" value="{{startTime}}" bindchange="onTimeChange">
+      <view class="time-picker">
+        <text class="time-value">{{startTime || '请选择时间'}}</text>
+        <text class="arrow">›</text>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 录音播放（如果有录音） -->
+  <view class="form-section" wx:if="{{audioPath}}">
+    <view class="section-label">
+      <text>🎤 录音</text>
+    </view>
+    <view class="audio-player" bindtap="playAudio">
+      <text class="audio-icon">{{isPlaying ? '⏸' : '▶️'}}</text>
+      <text class="audio-text">{{isPlaying ? '播放中...' : '点击播放录音'}}</text>
+    </view>
+  </view>
+
+  <!-- 日志内容 -->
+  <view class="form-section">
+    <view class="section-label">
+      <text>📝 内容</text>
+      <text class="char-count">{{content.length}}/500</text>
+    </view>
+    <view class="input-tip">💡 可使用微信键盘的语音输入功能</view>
+    <textarea
+      class="content-input"
+      placeholder="请输入或修改日志内容..."
+      value="{{content}}"
+      bindinput="onContentInput"
+      maxlength="500"
+      auto-height
+      cursor-spacing="20"
+    />
+  </view>
+
+  <!-- 快速标签 -->
+  <view class="form-section">
+    <view class="section-label">
+      <text>🏷️ 标签</text>
+    </view>
+    <view class="tags-container">
+      <view
+        class="tag-item {{item.selected ? 'selected' : ''}}"
+        wx:for="{{quickTags}}"
+        wx:key="name"
+        bindtap="toggleTag"
+        data-index="{{index}}"
+        style="background-color: {{item.selected ? item.color + '20' : '#f5f5f5'}}; color: {{item.selected ? item.color : '#666'}}"
+      >
+        <text>{{item.icon}} {{item.name}}</text>
+      </view>
+      <view class="tag-item more-tag" bindtap="showMoreTags">
+        <text>+ 更多</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 常用模板 -->
+  <view class="form-section" wx:if="{{templates.length > 0}}">
+    <view class="section-label">
+      <text>📋 常用模板</text>
+    </view>
+    <scroll-view class="templates-scroll" scroll-x>
+      <view class="templates-container">
+        <view
+          class="template-item"
+          wx:for="{{templates}}"
+          wx:key="id"
+          bindtap="useTemplate"
+          data-index="{{index}}"
+        >
+          <text>{{item.name}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 底部操作按钮 -->
+  <view class="footer-actions">
+    <button class="btn-cancel" bindtap="onCancel">取消</button>
+    <button class="btn-save" bindtap="onSave">保存</button>
+  </view>
+</view>
+
+<!-- 更多标签弹窗 -->
+<view class="modal {{showTagModal ? 'show' : ''}}" catchtap="hideTagModal">
+  <view class="modal-content" catchtap="stopPropagation">
+    <view class="modal-header">
+      <text class="modal-title">选择标签</text>
+      <text class="modal-close" bindtap="hideTagModal">✕</text>
+    </view>
+    <view class="modal-body">
+      <view class="all-tags">
+        <view
+          class="tag-item {{item.selected ? 'selected' : ''}}"
+          wx:for="{{allTags}}"
+          wx:key="name"
+          bindtap="toggleTagInModal"
+          data-index="{{index}}"
+          style="background-color: {{item.selected ? item.color + '20' : '#f5f5f5'}}; color: {{item.selected ? item.color : '#666'}}"
+        >
+          <text>{{item.icon}} {{item.name}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="modal-footer">
+      <button class="btn-confirm" bindtap="confirmTags">确定</button>
+    </view>
+  </view>
+</view>

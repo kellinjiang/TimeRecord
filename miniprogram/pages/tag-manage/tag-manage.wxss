@@ -1,0 +1,448 @@
+/* 标签管理页面样式 */
+
+.container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding-bottom: 40rpx;
+}
+
+/* 页面提示 */
+.page-tip {
+  margin: 24rpx 24rpx 0;
+  background: linear-gradient(135deg, #1AAD19 0%, #52c41a 100%);
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  box-shadow: 0 2rpx 12rpx rgba(26, 173, 25, 0.15);
+}
+
+.tip-icon {
+  font-size: 32rpx;
+}
+
+.tip-text {
+  flex: 1;
+  font-size: 26rpx;
+  color: white;
+  line-height: 1.5;
+}
+
+/* 区块样式 */
+.section {
+  margin: 24rpx;
+  background-color: white;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding-bottom: 16rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #1a1a1a;
+}
+
+.section-subtitle {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 添加按钮 */
+.add-btn {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  background-color: #1AAD19;
+  color: white;
+  padding: 12rpx 24rpx;
+  border-radius: 24rpx;
+  font-size: 26rpx;
+  box-shadow: 0 4rpx 12rpx rgba(26, 173, 25, 0.2);
+  transition: all 0.2s;
+}
+
+.add-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 2rpx 8rpx rgba(26, 173, 25, 0.3);
+}
+
+.add-icon {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.add-text {
+  font-size: 28rpx;
+}
+
+/* 标签列表 */
+.tag-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.tag-item {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 20rpx;
+  background-color: #fafafa;
+  border-radius: 12rpx;
+  transition: all 0.2s;
+}
+
+.tag-item:active {
+  background-color: #f0f0f0;
+}
+
+.tag-icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  flex-shrink: 0;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+
+.tag-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.tag-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #1a1a1a;
+}
+
+.tag-usage {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 标签徽章 */
+.tag-badge {
+  padding: 8rpx 16rpx;
+  background-color: #e8f5e9;
+  color: #1AAD19;
+  font-size: 22rpx;
+  border-radius: 8rpx;
+  font-weight: bold;
+}
+
+/* 操作按钮 */
+.tag-actions {
+  display: flex;
+  gap: 12rpx;
+}
+
+.action-btn {
+  padding: 12rpx 20rpx;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  transition: all 0.2s;
+}
+
+.edit-btn {
+  background-color: #1296db;
+  color: white;
+}
+
+.edit-btn:active {
+  background-color: #0e7ab8;
+}
+
+.delete-btn {
+  background-color: #f43530;
+  color: white;
+}
+
+.delete-btn:active {
+  background-color: #d32f2f;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 40rpx;
+  gap: 16rpx;
+}
+
+.empty-icon {
+  font-size: 100rpx;
+  opacity: 0.5;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.empty-tip {
+  font-size: 24rpx;
+  color: #ccc;
+}
+
+/* 弹窗遮罩 */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 弹窗主体 */
+.modal-dialog {
+  width: 660rpx;
+  background-color: white;
+  border-radius: 20rpx;
+  overflow: hidden;
+  animation: slideUp 0.3s;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100rpx);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* 弹窗头部 */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+  background: linear-gradient(135deg, #1AAD19 0%, #52c41a 100%);
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: white;
+}
+
+.close-btn {
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  color: white;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.close-btn:active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* 弹窗内容 */
+.modal-body {
+  padding: 32rpx;
+  max-height: 800rpx;
+  overflow-y: auto;
+}
+
+/* 表单项 */
+.form-item {
+  margin-bottom: 32rpx;
+  position: relative;
+}
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 16rpx;
+  font-weight: bold;
+}
+
+.form-input {
+  width: 100%;
+  padding: 24rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  background-color: #fafafa;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  border-color: #1AAD19;
+  background-color: white;
+}
+
+.char-count {
+  position: absolute;
+  right: 24rpx;
+  top: 90rpx;
+  font-size: 22rpx;
+  color: #999;
+}
+
+/* 图标网格 */
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12rpx;
+}
+
+.icon-item {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  background-color: #fafafa;
+  border-radius: 12rpx;
+  border: 2rpx solid transparent;
+  transition: all 0.2s;
+}
+
+.icon-item:active {
+  transform: scale(0.9);
+}
+
+.icon-item.active {
+  background-color: #e8f5e9;
+  border-color: #1AAD19;
+  transform: scale(1.1);
+}
+
+/* 颜色网格 */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16rpx;
+}
+
+.color-item {
+  aspect-ratio: 1;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3rpx solid transparent;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.color-item:active {
+  transform: scale(0.9);
+}
+
+.color-item.active {
+  border-color: #1a1a1a;
+  transform: scale(1.1);
+}
+
+.check-icon {
+  font-size: 32rpx;
+  color: white;
+  font-weight: bold;
+}
+
+/* 预览 */
+.tag-preview {
+  display: flex;
+  justify-content: center;
+  padding: 32rpx;
+  background-color: #fafafa;
+  border-radius: 12rpx;
+}
+
+.preview-tag {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 16rpx 32rpx;
+  border-radius: 24rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+}
+
+.preview-icon {
+  font-size: 36rpx;
+}
+
+.preview-name {
+  font-size: 28rpx;
+  color: white;
+  font-weight: bold;
+}
+
+/* 弹窗底部 */
+.modal-footer {
+  display: flex;
+  border-top: 2rpx solid #f0f0f0;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 32rpx;
+  text-align: center;
+  font-size: 30rpx;
+  transition: all 0.2s;
+}
+
+.modal-btn:active {
+  background-color: #f0f0f0;
+}
+
+.cancel-btn {
+  color: #666;
+  border-right: 2rpx solid #f0f0f0;
+}
+
+.confirm-btn {
+  color: #1AAD19;
+  font-weight: bold;
+}

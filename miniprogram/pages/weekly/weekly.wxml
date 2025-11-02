@@ -1,0 +1,138 @@
+<!--pages/weekly/weekly.wxml-->
+<view class="container">
+  <!-- 顶部周导航 -->
+  <view class="week-header">
+    <view class="week-nav" bindtap="prevWeek">
+      <text class="nav-arrow">‹</text>
+    </view>
+    <view class="week-picker">
+      <text class="week-range">{{weekRange}}</text>
+      <text class="week-label">第{{weekNumber}}周</text>
+    </view>
+    <view class="week-nav" bindtap="nextWeek">
+      <text class="nav-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 本周统计卡片 -->
+  <view class="stats-card">
+    <view class="stats-title">📊 本周统计</view>
+    <view class="stats-content">
+      <view class="stat-item">
+        <text class="stat-value">{{stats.totalRecords}}</text>
+        <text class="stat-label">记录数</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">{{stats.totalHours}}h</text>
+        <text class="stat-label">总时长</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">{{stats.avgHours}}h</text>
+        <text class="stat-label">日均时长</text>
+      </view>
+    </view>
+
+    <!-- 标签分布 -->
+    <view class="tags-distribution" wx:if="{{stats.tagStats.length > 0}}">
+      <view
+        class="tag-bar"
+        wx:for="{{stats.tagStats}}"
+        wx:key="name"
+        style="width: {{item.percentage}}%; background-color: {{item.color}};"
+      >
+        <text class="tag-bar-label" wx:if="{{item.percentage > 10}}">{{item.icon}} {{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 每日时长柱状图 -->
+  <view class="chart-section">
+    <view class="section-header">
+      <text class="section-title">📈 每日时长</text>
+      <text class="chart-unit">小时</text>
+    </view>
+
+    <view class="bar-chart">
+      <view
+        class="bar-item"
+        wx:for="{{weekDays}}"
+        wx:key="date"
+        bindtap="viewDay"
+        data-date="{{item.date}}"
+      >
+        <view class="bar-container">
+          <view
+            class="bar-fill"
+            style="height: {{item.percentage}}%; background-color: {{item.isToday ? '#1AAD19' : '#91d5ff'}};"
+          >
+            <text class="bar-value" wx:if="{{item.hours > 0}}">{{item.hours}}h</text>
+          </view>
+        </view>
+        <text class="bar-label {{item.isToday ? 'today' : ''}}">{{item.dayLabel}}</text>
+        <text class="bar-date">{{item.dateLabel}}</text>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-chart" wx:if="{{stats.totalRecords === 0}}">
+      <text class="empty-icon">📊</text>
+      <text class="empty-text">本周还没有记录</text>
+    </view>
+  </view>
+
+  <!-- 标签详细统计 -->
+  <view class="tags-section" wx:if="{{stats.tagStats.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">🏷️ 标签统计</text>
+      <text class="tags-count">{{stats.tagStats.length}} 个标签</text>
+    </view>
+
+    <view class="tag-list">
+      <view
+        class="tag-stat-item"
+        wx:for="{{stats.tagStats}}"
+        wx:key="name"
+      >
+        <view class="tag-info">
+          <text class="tag-icon">{{item.icon}}</text>
+          <text class="tag-name">{{item.name}}</text>
+        </view>
+        <view class="tag-data">
+          <text class="tag-hours">{{item.hours}}h</text>
+          <text class="tag-percentage">{{item.percentage}}%</text>
+        </view>
+        <view class="tag-bar-bg">
+          <view
+            class="tag-bar-fill"
+            style="width: {{item.percentage}}%; background-color: {{item.color}};"
+          ></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 周总结 -->
+  <view class="summary-section">
+    <view class="section-header">
+      <text class="section-title">📝 周总结</text>
+      <text class="summary-hint" wx:if="{{!summary.content}}">点击输入</text>
+    </view>
+    <view class="summary-input">
+      <textarea
+        class="summary-textarea"
+        placeholder="回顾本周的收获和思考...&#10;&#10;提示：&#10;• 本周完成了哪些重要任务？&#10;• 遇到了什么挑战？&#10;• 下周计划做什么？"
+        value="{{summary.content}}"
+        bindinput="onSummaryInput"
+        bindblur="saveSummary"
+        maxlength="1000"
+        auto-height
+        cursor-spacing="20"
+      />
+      <view class="summary-char-count" wx:if="{{summary.content}}">
+        <text>{{summary.content.length}}/1000</text>
+      </view>
+    </view>
+  </view>
+</view>

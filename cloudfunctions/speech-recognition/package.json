@@ -1,0 +1,12 @@
+{
+  "name": "speech-recognition",
+  "version": "1.0.0",
+  "description": "讯飞语音识别云函数",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3",
+    "axios": "^0.27.2",
+    "ws": "^8.13.0",
+    "crypto-js": "^4.1.1"
+  }
+}

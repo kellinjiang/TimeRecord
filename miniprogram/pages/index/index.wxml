@@ -1,0 +1,58 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 顶部时间显示 -->
+  <view class="header">
+    <text class="current-time">{{currentTime}}</text>
+    <text class="current-date">{{currentDate}}</text>
+  </view>
+
+  <!-- 中央录音按钮区域 -->
+  <view class="record-area">
+    <view class="record-btn {{isRecording ? 'recording' : ''}}"
+          bindtap="toggleRecord">
+      <view class="mic-icon">🎤</view>
+      <text class="record-text">{{recordText}}</text>
+    </view>
+
+    <!-- 录音状态提示 -->
+    <view class="status-tip" wx:if="{{statusTip}}">
+      <text>{{statusTip}}</text>
+    </view>
+  </view>
+
+  <!-- 最近记录 -->
+  <view class="recent-records">
+    <view class="section-title">
+      <text>📋 最近记录</text>
+    </view>
+
+    <view class="record-list">
+      <view class="record-item"
+            wx:for="{{recentRecords}}"
+            wx:key="id"
+            bindtap="viewDetail"
+            data-id="{{item._id}}">
+        <view class="record-time">
+          <text>{{item.startTimeStr}} - {{item.endTimeStr}}</text>
+        </view>
+        <view class="record-content">
+          <text>{{item.content}}</text>
+        </view>
+        <view class="record-tags">
+          <text class="tag"
+                wx:for="{{item.tags}}"
+                wx:for-item="tag"
+                wx:key="index"
+                style="background-color: {{tag.color}}20; color: {{tag.color}}">
+            {{tag.icon}} {{tag.name}}
+          </text>
+        </view>
+      </view>
+
+      <!-- 空状态 -->
+      <view class="empty-state" wx:if="{{recentRecords.length === 0}}">
+        <text>🎯 点击上方按钮开始记录</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,518 @@
+/* 模板管理页面样式 */
+
+.container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding-bottom: 40rpx;
+}
+
+/* 页面提示 */
+.page-tip {
+  margin: 24rpx 24rpx 0;
+  background: linear-gradient(135deg, #1296db 0%, #10aeff 100%);
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  box-shadow: 0 2rpx 12rpx rgba(18, 150, 219, 0.15);
+}
+
+.tip-icon {
+  font-size: 32rpx;
+}
+
+.tip-text {
+  flex: 1;
+  font-size: 26rpx;
+  color: white;
+  line-height: 1.5;
+}
+
+/* 分类筛选 */
+.category-filter {
+  margin: 24rpx;
+  display: flex;
+  gap: 12rpx;
+  overflow-x: auto;
+  padding-bottom: 4rpx;
+}
+
+.category-filter::-webkit-scrollbar {
+  display: none;
+}
+
+.category-item {
+  flex-shrink: 0;
+  padding: 12rpx 28rpx;
+  background-color: white;
+  border-radius: 24rpx;
+  font-size: 26rpx;
+  color: #666;
+  border: 2rpx solid transparent;
+  transition: all 0.2s;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.category-item:active {
+  transform: scale(0.95);
+}
+
+.category-item.active {
+  background: linear-gradient(135deg, #1296db 0%, #10aeff 100%);
+  color: white;
+  border-color: #1296db;
+  box-shadow: 0 4rpx 12rpx rgba(18, 150, 219, 0.2);
+}
+
+/* 区块样式 */
+.section {
+  margin: 24rpx;
+  background-color: white;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding-bottom: 16rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #1a1a1a;
+}
+
+.section-subtitle {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 添加按钮 */
+.add-btn {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  background-color: #1296db;
+  color: white;
+  padding: 12rpx 24rpx;
+  border-radius: 24rpx;
+  font-size: 26rpx;
+  box-shadow: 0 4rpx 12rpx rgba(18, 150, 219, 0.2);
+  transition: all 0.2s;
+}
+
+.add-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 2rpx 8rpx rgba(18, 150, 219, 0.3);
+}
+
+.add-icon {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.add-text {
+  font-size: 28rpx;
+}
+
+/* 模板列表 */
+.template-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.template-item {
+  padding: 24rpx;
+  background-color: #fafafa;
+  border-radius: 12rpx;
+  border-left: 4rpx solid #1296db;
+  transition: all 0.2s;
+}
+
+.template-item.custom {
+  border-left-color: #1AAD19;
+}
+
+.template-item:active {
+  background-color: #f0f0f0;
+}
+
+.template-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12rpx;
+}
+
+.template-title-row {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.template-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #1a1a1a;
+}
+
+.template-category {
+  padding: 4rpx 12rpx;
+  background-color: #e3f2fd;
+  color: #1296db;
+  font-size: 22rpx;
+  border-radius: 8rpx;
+}
+
+.template-badge {
+  padding: 8rpx 16rpx;
+  background-color: #e3f2fd;
+  color: #1296db;
+  font-size: 22rpx;
+  border-radius: 8rpx;
+  font-weight: bold;
+}
+
+/* 操作按钮 */
+.template-actions {
+  display: flex;
+  gap: 12rpx;
+}
+
+.action-btn {
+  padding: 8rpx 16rpx;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  transition: all 0.2s;
+}
+
+.edit-btn {
+  background-color: #1296db;
+  color: white;
+}
+
+.edit-btn:active {
+  background-color: #0e7ab8;
+}
+
+.delete-btn {
+  background-color: #f43530;
+  color: white;
+}
+
+.delete-btn:active {
+  background-color: #d32f2f;
+}
+
+/* 模板内容 */
+.template-content {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 12rpx;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 200rpx;
+  overflow: hidden;
+  position: relative;
+}
+
+/* 模板底部信息 */
+.template-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12rpx;
+  border-top: 1rpx solid #e0e0e0;
+}
+
+.template-usage {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.template-time {
+  font-size: 22rpx;
+  color: #ccc;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 40rpx;
+  gap: 16rpx;
+}
+
+.empty-icon {
+  font-size: 100rpx;
+  opacity: 0.5;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.empty-tip {
+  font-size: 24rpx;
+  color: #ccc;
+}
+
+/* 弹窗遮罩 */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 弹窗主体 */
+.modal-dialog {
+  width: 660rpx;
+  max-height: 90vh;
+  background-color: white;
+  border-radius: 20rpx;
+  overflow: hidden;
+  animation: slideUp 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100rpx);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* 弹窗头部 */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+  background: linear-gradient(135deg, #1296db 0%, #10aeff 100%);
+  flex-shrink: 0;
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: white;
+}
+
+.close-btn {
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  color: white;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.close-btn:active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* 弹窗内容 */
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32rpx;
+}
+
+/* 表单项 */
+.form-item {
+  margin-bottom: 32rpx;
+  position: relative;
+}
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 16rpx;
+  font-weight: bold;
+}
+
+.form-input {
+  width: 100%;
+  padding: 24rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  background-color: #fafafa;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  border-color: #1296db;
+  background-color: white;
+}
+
+.form-textarea {
+  width: 100%;
+  min-height: 200rpx;
+  padding: 24rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  background-color: #fafafa;
+  box-sizing: border-box;
+  line-height: 1.6;
+}
+
+.form-textarea:focus {
+  border-color: #1296db;
+  background-color: white;
+}
+
+.char-count {
+  position: absolute;
+  right: 24rpx;
+  bottom: 24rpx;
+  font-size: 22rpx;
+  color: #999;
+}
+
+/* 分类选项 */
+.category-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.category-option {
+  padding: 12rpx 24rpx;
+  background-color: #fafafa;
+  border-radius: 20rpx;
+  font-size: 26rpx;
+  color: #666;
+  border: 2rpx solid transparent;
+  transition: all 0.2s;
+}
+
+.category-option:active {
+  transform: scale(0.95);
+}
+
+.category-option.active {
+  background-color: #e3f2fd;
+  color: #1296db;
+  border-color: #1296db;
+  font-weight: bold;
+}
+
+/* 预览 */
+.template-preview {
+  padding: 24rpx;
+  background-color: #fafafa;
+  border-radius: 12rpx;
+}
+
+.preview-template {
+  background-color: white;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  border-left: 4rpx solid #1AAD19;
+}
+
+.preview-header {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.preview-name {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #1a1a1a;
+}
+
+.preview-category {
+  padding: 4rpx 12rpx;
+  background-color: #e3f2fd;
+  color: #1296db;
+  font-size: 22rpx;
+  border-radius: 8rpx;
+}
+
+.preview-content {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* 弹窗底部 */
+.modal-footer {
+  display: flex;
+  border-top: 2rpx solid #f0f0f0;
+  flex-shrink: 0;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 32rpx;
+  text-align: center;
+  font-size: 30rpx;
+  transition: all 0.2s;
+}
+
+.modal-btn:active {
+  background-color: #f0f0f0;
+}
+
+.cancel-btn {
+  color: #666;
+  border-right: 2rpx solid #f0f0f0;
+}
+
+.confirm-btn {
+  color: #1296db;
+  font-weight: bold;
+}

@@ -1,0 +1,180 @@
+<!--模板管理页面-->
+<view class="container">
+
+  <!-- 页面说明 -->
+  <view class="page-tip">
+    <text class="tip-icon">📋</text>
+    <text class="tip-text">管理您的常用模板，快速填充记录内容</text>
+  </view>
+
+  <!-- 分类筛选 -->
+  <view class="category-filter">
+    <view
+      class="category-item {{currentCategory === 'all' ? 'active' : ''}}"
+      bindtap="filterCategory"
+      data-category="all"
+    >
+      <text>全部</text>
+    </view>
+    <view
+      class="category-item {{currentCategory === item ? 'active' : ''}}"
+      wx:for="{{categories}}"
+      wx:key="*this"
+      bindtap="filterCategory"
+      data-category="{{item}}"
+    >
+      <text>{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 默认模板区域 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">默认模板</text>
+      <text class="section-subtitle">系统内置，不可编辑</text>
+    </view>
+
+    <view class="template-list">
+      <view class="template-item" wx:for="{{filteredDefaultTemplates}}" wx:key="name">
+        <view class="template-header">
+          <view class="template-title-row">
+            <text class="template-name">{{item.name}}</text>
+            <view class="template-category">{{item.category}}</view>
+          </view>
+          <view class="template-badge">默认</view>
+        </view>
+        <view class="template-content">{{item.content}}</view>
+        <view class="template-footer">
+          <text class="template-usage">使用 {{item.usageCount || 0}} 次</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 自定义模板区域 -->
+  <view class="section">
+    <view class="section-header">
+      <view class="header-left">
+        <text class="section-title">自定义模板</text>
+        <text class="section-subtitle">{{filteredCustomTemplates.length}} 个</text>
+      </view>
+      <view class="add-btn" bindtap="showAddDialog">
+        <text class="add-icon">+</text>
+        <text class="add-text">添加</text>
+      </view>
+    </view>
+
+    <!-- 自定义模板列表 -->
+    <view class="template-list" wx:if="{{filteredCustomTemplates.length > 0}}">
+      <view class="template-item custom" wx:for="{{filteredCustomTemplates}}" wx:key="_id">
+        <view class="template-header">
+          <view class="template-title-row">
+            <text class="template-name">{{item.name}}</text>
+            <view class="template-category">{{item.category}}</view>
+          </view>
+          <view class="template-actions">
+            <view class="action-btn edit-btn" bindtap="editTemplate" data-template="{{item}}">
+              <text>编辑</text>
+            </view>
+            <view class="action-btn delete-btn" bindtap="deleteTemplate" data-id="{{item._id}}" data-name="{{item.name}}">
+              <text>删除</text>
+            </view>
+          </view>
+        </view>
+        <view class="template-content">{{item.content}}</view>
+        <view class="template-footer">
+          <text class="template-usage">使用 {{item.usageCount || 0}} 次</text>
+          <text class="template-time">{{item.createTime}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{filteredCustomTemplates.length === 0}}">
+      <text class="empty-icon">📝</text>
+      <text class="empty-text">{{currentCategory === 'all' ? '还没有自定义模板' : '该分类下没有模板'}}</text>
+      <text class="empty-tip">点击右上角"添加"按钮创建</text>
+    </view>
+  </view>
+
+  <!-- 添加/编辑模板弹窗 -->
+  <view class="modal-mask" wx:if="{{showDialog}}" bindtap="hideDialog" catchtouchmove="preventMove">
+    <view class="modal-dialog" catchtap="stopPropagation">
+      <view class="modal-header">
+        <text class="modal-title">{{isEditMode ? '编辑模板' : '添加模板'}}</text>
+        <view class="close-btn" bindtap="hideDialog">
+          <text>✕</text>
+        </view>
+      </view>
+
+      <view class="modal-body">
+        <!-- 模板名称 -->
+        <view class="form-item">
+          <text class="form-label">模板名称</text>
+          <input
+            class="form-input"
+            placeholder="请输入模板名称"
+            value="{{formData.name}}"
+            bindinput="onNameInput"
+            maxlength="20"
+          />
+          <text class="char-count">{{formData.name.length}}/20</text>
+        </view>
+
+        <!-- 选择分类 -->
+        <view class="form-item">
+          <text class="form-label">选择分类</text>
+          <view class="category-options">
+            <view
+              class="category-option {{formData.category === item ? 'active' : ''}}"
+              wx:for="{{categories}}"
+              wx:key="*this"
+              bindtap="selectCategory"
+              data-category="{{item}}"
+            >
+              <text>{{item}}</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 模板内容 -->
+        <view class="form-item">
+          <text class="form-label">模板内容</text>
+          <textarea
+            class="form-textarea"
+            placeholder="请输入模板内容，支持换行"
+            value="{{formData.content}}"
+            bindinput="onContentInput"
+            maxlength="500"
+            auto-height
+          />
+          <text class="char-count">{{formData.content.length}}/500</text>
+        </view>
+
+        <!-- 预览 -->
+        <view class="form-item">
+          <text class="form-label">预览效果</text>
+          <view class="template-preview">
+            <view class="preview-template">
+              <view class="preview-header">
+                <text class="preview-name">{{formData.name || '模板名称'}}</text>
+                <view class="preview-category">{{formData.category}}</view>
+              </view>
+              <view class="preview-content">{{formData.content || '模板内容预览...'}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="modal-footer">
+        <view class="modal-btn cancel-btn" bindtap="hideDialog">
+          <text>取消</text>
+        </view>
+        <view class="modal-btn confirm-btn" bindtap="saveTemplate">
+          <text>{{isEditMode ? '保存' : '添加'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>

@@ -1,0 +1,155 @@
+<!--标签管理页面-->
+<view class="container">
+
+  <!-- 页面说明 -->
+  <view class="page-tip">
+    <text class="tip-icon">💡</text>
+    <text class="tip-text">管理您的标签，自定义标签可以编辑和删除</text>
+  </view>
+
+  <!-- 默认标签区域 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">默认标签</text>
+      <text class="section-subtitle">系统内置，不可编辑</text>
+    </view>
+
+    <view class="tag-list">
+      <view class="tag-item" wx:for="{{defaultTags}}" wx:key="name">
+        <view class="tag-icon" style="background-color: {{item.color}};">
+          <text>{{item.icon}}</text>
+        </view>
+        <view class="tag-info">
+          <text class="tag-name">{{item.name}}</text>
+          <text class="tag-usage">使用 {{item.usageCount || 0}} 次</text>
+        </view>
+        <view class="tag-badge">
+          <text>默认</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 自定义标签区域 -->
+  <view class="section">
+    <view class="section-header">
+      <view class="header-left">
+        <text class="section-title">自定义标签</text>
+        <text class="section-subtitle">{{customTags.length}} 个</text>
+      </view>
+      <view class="add-btn" bindtap="showAddDialog">
+        <text class="add-icon">+</text>
+        <text class="add-text">添加</text>
+      </view>
+    </view>
+
+    <!-- 自定义标签列表 -->
+    <view class="tag-list" wx:if="{{customTags.length > 0}}">
+      <view class="tag-item" wx:for="{{customTags}}" wx:key="_id">
+        <view class="tag-icon" style="background-color: {{item.color}};">
+          <text>{{item.icon}}</text>
+        </view>
+        <view class="tag-info">
+          <text class="tag-name">{{item.name}}</text>
+          <text class="tag-usage">使用 {{item.usageCount || 0}} 次</text>
+        </view>
+        <view class="tag-actions">
+          <view class="action-btn edit-btn" bindtap="editTag" data-tag="{{item}}">
+            <text>编辑</text>
+          </view>
+          <view class="action-btn delete-btn" bindtap="deleteTag" data-id="{{item._id}}" data-name="{{item.name}}">
+            <text>删除</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{customTags.length === 0}}">
+      <text class="empty-icon">🏷️</text>
+      <text class="empty-text">还没有自定义标签</text>
+      <text class="empty-tip">点击右上角"添加"按钮创建</text>
+    </view>
+  </view>
+
+  <!-- 添加/编辑标签弹窗 -->
+  <view class="modal-mask" wx:if="{{showDialog}}" bindtap="hideDialog" catchtouchmove="preventMove">
+    <view class="modal-dialog" catchtap="stopPropagation">
+      <view class="modal-header">
+        <text class="modal-title">{{isEditMode ? '编辑标签' : '添加标签'}}</text>
+        <view class="close-btn" bindtap="hideDialog">
+          <text>✕</text>
+        </view>
+      </view>
+
+      <view class="modal-body">
+        <!-- 标签名称 -->
+        <view class="form-item">
+          <text class="form-label">标签名称</text>
+          <input
+            class="form-input"
+            placeholder="请输入标签名称"
+            value="{{formData.name}}"
+            bindinput="onNameInput"
+            maxlength="10"
+          />
+          <text class="char-count">{{formData.name.length}}/10</text>
+        </view>
+
+        <!-- 选择图标 -->
+        <view class="form-item">
+          <text class="form-label">选择图标</text>
+          <view class="icon-grid">
+            <view
+              class="icon-item {{formData.icon === item ? 'active' : ''}}"
+              wx:for="{{iconOptions}}"
+              wx:key="*this"
+              bindtap="selectIcon"
+              data-icon="{{item}}"
+            >
+              <text>{{item}}</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 选择颜色 -->
+        <view class="form-item">
+          <text class="form-label">选择颜色</text>
+          <view class="color-grid">
+            <view
+              class="color-item {{formData.color === item ? 'active' : ''}}"
+              wx:for="{{colorOptions}}"
+              wx:key="*this"
+              style="background-color: {{item}};"
+              bindtap="selectColor"
+              data-color="{{item}}"
+            >
+              <text class="check-icon" wx:if="{{formData.color === item}}">✓</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 预览 -->
+        <view class="form-item">
+          <text class="form-label">预览效果</text>
+          <view class="tag-preview">
+            <view class="preview-tag" style="background-color: {{formData.color}};">
+              <text class="preview-icon">{{formData.icon}}</text>
+              <text class="preview-name">{{formData.name || '标签名称'}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="modal-footer">
+        <view class="modal-btn cancel-btn" bindtap="hideDialog">
+          <text>取消</text>
+        </view>
+        <view class="modal-btn confirm-btn" bindtap="saveTag">
+          <text>{{isEditMode ? '保存' : '添加'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>

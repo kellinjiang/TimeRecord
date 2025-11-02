@@ -1,0 +1,525 @@
+/* pages/daily/daily.wxss */
+
+.container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding-bottom: 40rpx;
+}
+
+/* 日期头部 */
+.date-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx 20rpx;
+  background-color: white;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.date-nav {
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-arrow {
+  font-size: 48rpx;
+  color: #666;
+  font-weight: 300;
+}
+
+.date-picker {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.current-date {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.week-day {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 统计卡片 */
+.stats-card {
+  margin: 20rpx;
+  padding: 30rpx;
+  background-color: white;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.stats-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 24rpx;
+}
+
+/* 统计摘要 */
+.stats-summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 16rpx 0;
+  margin-bottom: 24rpx;
+  background-color: #f8f8f8;
+  border-radius: 12rpx;
+}
+
+.summary-text {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.summary-count {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #1AAD19;
+  margin: 0 4rpx;
+}
+
+.summary-hours {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #1296db;
+  margin: 0 4rpx;
+}
+
+.summary-divider {
+  margin: 0 16rpx;
+  color: #ddd;
+  font-size: 24rpx;
+}
+
+/* 标签时长柱状图 */
+.tag-chart-section {
+  margin-top: 32rpx;
+  padding-top: 32rpx;
+  border-top: 2rpx solid #f0f0f0;
+}
+
+.chart-title {
+  font-size: 26rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.tag-chart-container {
+  padding: 16rpx 0;
+  display: flex;
+  gap: 16rpx;
+}
+
+/* Y轴 */
+.y-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 60rpx;
+  height: 240rpx;
+  padding-top: 8rpx;
+}
+
+.y-axis-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8rpx;
+  flex: 1;
+  position: relative;
+}
+
+.y-axis-label {
+  font-size: 20rpx;
+  color: #999;
+  white-space: nowrap;
+}
+
+.y-axis-line {
+  width: 8rpx;
+  height: 1rpx;
+  background-color: #e0e0e0;
+}
+
+.tag-chart-bars {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 16rpx;
+  height: 240rpx;
+  padding: 0 8rpx;
+}
+
+.tag-chart-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.bar-wrapper {
+  width: 100%;
+  height: 200rpx;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.bar-fill {
+  width: 70%;
+  min-height: 8rpx;
+  border-radius: 8rpx 8rpx 0 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 8rpx;
+  transition: all 0.3s;
+  box-shadow: 0 -2rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+
+.bar-value {
+  font-size: 20rpx;
+  color: white;
+  font-weight: bold;
+}
+
+.bar-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.bar-icon {
+  font-size: 28rpx;
+}
+
+.bar-name {
+  font-size: 22rpx;
+  color: #666;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* 记录表格 */
+.record-table-section {
+  margin-top: 32rpx;
+  padding-top: 32rpx;
+  border-top: 2rpx solid #f0f0f0;
+}
+
+.record-table {
+  background-color: #fafafa;
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 2.5fr 1fr 1.2fr;
+  gap: 12rpx;
+  padding: 16rpx 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+  align-items: center;
+  transition: background-color 0.2s;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.table-row:not(.table-header):active {
+  background-color: #f0f0f0;
+}
+
+.table-header {
+  background-color: #e8f5e9;
+  font-weight: bold;
+}
+
+.col-time {
+  font-size: 22rpx;
+  color: #666;
+  word-break: keep-all;
+}
+
+.table-header .col-time {
+  color: #1AAD19;
+  font-size: 24rpx;
+}
+
+.col-content {
+  font-size: 24rpx;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.table-header .col-content {
+  color: #1AAD19;
+  font-size: 24rpx;
+}
+
+.col-duration {
+  font-size: 22rpx;
+  color: #1296db;
+  text-align: center;
+  font-weight: 500;
+}
+
+.table-header .col-duration {
+  color: #1AAD19;
+  font-size: 24rpx;
+}
+
+.col-tag {
+  display: flex;
+  gap: 6rpx;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.table-header .col-tag {
+  color: #1AAD19;
+  font-size: 24rpx;
+  display: block;
+  text-align: center;
+}
+
+.mini-tag {
+  font-size: 20rpx;
+  padding: 4rpx 8rpx;
+  border-radius: 8rpx;
+}
+
+/* 时间轴区域 */
+.timeline-section {
+  margin: 20rpx;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.record-count {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 时间轴列表 */
+.timeline-list {
+  /* 容器 */
+}
+
+.timeline-item {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 32rpx;
+}
+
+/* 时间线 */
+.timeline-line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40rpx;
+}
+
+.timeline-dot {
+  width: 24rpx;
+  height: 24rpx;
+  border-radius: 50%;
+  background-color: #1AAD19;
+  border: 4rpx solid #e8f5e9;
+  flex-shrink: 0;
+}
+
+.timeline-connector {
+  flex: 1;
+  width: 4rpx;
+  background: linear-gradient(to bottom, #1AAD19 0%, #e0e0e0 100%);
+  margin: 8rpx 0;
+}
+
+/* 记录卡片 */
+.record-card {
+  flex: 1;
+  background-color: white;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+  transition: all 0.2s;
+}
+
+.record-card:active {
+  transform: scale(0.98);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
+}
+
+.record-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.record-time {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.time-start {
+  font-weight: 500;
+  color: #333;
+}
+
+.time-separator {
+  color: #ccc;
+}
+
+.time-end {
+  font-weight: 500;
+  color: #333;
+}
+
+.record-duration {
+  padding: 6rpx 16rpx;
+  background-color: #f0f0f0;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  color: #666;
+}
+
+.record-content {
+  font-size: 28rpx;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 16rpx;
+}
+
+.record-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.tag {
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 40rpx;
+  background-color: white;
+  border-radius: 16rpx;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 24rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 12rpx;
+}
+
+.empty-hint {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 每日总结 */
+.summary-section {
+  margin: 20rpx;
+}
+
+.summary-hint {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.summary-input {
+  background-color: white;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-top: 16rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.summary-textarea {
+  width: 100%;
+  min-height: 150rpx;
+  font-size: 28rpx;
+  line-height: 1.6;
+  color: #333;
+}
+
+.summary-char-count {
+  text-align: right;
+  margin-top: 16rpx;
+  font-size: 22rpx;
+  color: #999;
+}
+
+/* 录音播放按钮 */
+.record-audio {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 16rpx 20rpx;
+  background-color: #f0f9f1;
+  border-radius: 12rpx;
+  margin-bottom: 16rpx;
+  transition: all 0.2s;
+}
+
+.record-audio:active {
+  background-color: #e8f5e9;
+  transform: scale(0.98);
+}
+
+.audio-icon {
+  font-size: 32rpx;
+  flex-shrink: 0;
+}
+
+.audio-text {
+  font-size: 26rpx;
+  color: #1AAD19;
+  font-weight: 500;
+}
