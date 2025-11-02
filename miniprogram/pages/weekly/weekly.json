@@ -1,7 +1,7 @@
 {
   "navigationBarTitleText": "周视图",
-  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarBackgroundColor": "#F5F9F6",
   "navigationBarTextStyle": "black",
-  "backgroundColor": "#f5f5f5",
+  "backgroundColor": "#F5F9F6",
   "enablePullDownRefresh": true
 }

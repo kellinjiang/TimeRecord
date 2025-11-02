@@ -8,7 +8,7 @@ Page({
     // 默认模板列表
     defaultTemplates: [
       {
-        name: '工作日志',
+        name: '工作日记',
         category: '工作',
         content: '今天完成了以下工作：\n1. \n2. \n3. \n\n明天计划：\n1. \n2. ',
         usageCount: 0
@@ -78,7 +78,7 @@ Page({
     return new Promise((resolve, reject) => {
       const defaultTemplates = [
         {
-          name: '工作日志',
+          name: '工作日记',
           category: '工作',
           content: '今天完成了以下工作：\n1. \n2. \n3. \n\n明天计划：\n1. \n2. ',
           usageCount: 0

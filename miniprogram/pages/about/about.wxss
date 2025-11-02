@@ -2,7 +2,7 @@
 
 .container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #B8D4C8 0%, #A8C9BA 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,7 +13,7 @@
 .app-icon {
   width: 160rpx;
   height: 160rpx;
-  background-color: white;
+  background-color: #FFFFFF;
   border-radius: 32rpx;
   display: flex;
   align-items: center;
@@ -53,7 +53,7 @@
 .intro-text {
   font-size: 28rpx;
   line-height: 1.8;
-  color: #333;
+  color: #2C5F4A;
   text-align: justify;
 }
 
@@ -99,8 +99,8 @@
   width: 400rpx;
   height: 400rpx;
   border-radius: 16rpx;
-  border: 2rpx solid #f0f0f0;
-  background-color: #fafafa;
+  border: 2rpx solid #E5F2EC;
+  background-color: #F5F9F6;
 }
 
 .qrcode-tip {

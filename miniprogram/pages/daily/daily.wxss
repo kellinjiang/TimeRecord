@@ -2,7 +2,7 @@
 
 .container {
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: #F5F9F6;
   padding-bottom: 40rpx;
 }
 
@@ -12,8 +12,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 30rpx 20rpx;
-  background-color: white;
-  border-bottom: 2rpx solid #f0f0f0;
+  background-color: #FFFFFF;
+  border-bottom: 2rpx solid #E5F2EC;
 }
 
 .date-nav {
@@ -26,7 +26,7 @@
 
 .nav-arrow {
   font-size: 48rpx;
-  color: #666;
+  color: #6B7A68;
   font-weight: 300;
 }
 
@@ -38,15 +38,21 @@
   gap: 8rpx;
 }
 
+.date-picker-trigger {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
 .current-date {
   font-size: 36rpx;
   font-weight: bold;
-  color: #333;
+  color: #2C5F4A;
 }
 
 .week-day {
   font-size: 24rpx;
-  color: #999;
+  color: #6B9480;
 }
 
 /* 统计卡片 */
@@ -73,7 +79,7 @@
   flex-wrap: wrap;
   padding: 16rpx 0;
   margin-bottom: 24rpx;
-  background-color: #f8f8f8;
+  background-color: #F5F9F6;
   border-radius: 12rpx;
 }
 
@@ -85,20 +91,20 @@
 .summary-count {
   font-size: 36rpx;
   font-weight: bold;
-  color: #1AAD19;
+  color: #B8D4C8;
   margin: 0 4rpx;
 }
 
 .summary-hours {
   font-size: 36rpx;
   font-weight: bold;
-  color: #1296db;
+  color: #8FB9A8;
   margin: 0 4rpx;
 }
 
 .summary-divider {
   margin: 0 16rpx;
-  color: #ddd;
+  color: #C8D5C0;
   font-size: 24rpx;
 }
 
@@ -107,13 +113,14 @@
   margin-top: 32rpx;
   padding-top: 32rpx;
   border-top: 2rpx solid #f0f0f0;
+  overflow: visible;
 }
 
 .chart-title {
   font-size: 26rpx;
   font-weight: bold;
   color: #333;
-  margin-bottom: 20rpx;
+  margin-bottom: 28rpx;
 }
 
 .tag-chart-container {
@@ -128,7 +135,7 @@
   flex-direction: column;
   justify-content: space-between;
   width: 60rpx;
-  height: 240rpx;
+  height: 200rpx;
   padding-top: 8rpx;
 }
 
@@ -150,7 +157,7 @@
 .y-axis-line {
   width: 8rpx;
   height: 1rpx;
-  background-color: #e0e0e0;
+  background-color: #D4E8DF;
 }
 
 .tag-chart-bars {
@@ -159,7 +166,7 @@
   align-items: flex-end;
   justify-content: space-around;
   gap: 16rpx;
-  height: 240rpx;
+  height: 200rpx;
   padding: 0 8rpx;
 }
 
@@ -173,7 +180,7 @@
 
 .bar-wrapper {
   width: 100%;
-  height: 200rpx;
+  height: 160rpx;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -182,13 +189,15 @@
 .bar-fill {
   width: 70%;
   min-height: 8rpx;
+  max-height: 160rpx;
   border-radius: 8rpx 8rpx 0 0;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding-top: 8rpx;
+  padding-top: 6rpx;
   transition: all 0.3s;
   box-shadow: 0 -2rpx 8rpx rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 .bar-value {
@@ -223,7 +232,7 @@
 }
 
 .record-table {
-  background-color: #fafafa;
+  background-color: #F0F4EE;
   border-radius: 12rpx;
   overflow: hidden;
 }
@@ -247,7 +256,7 @@
 }
 
 .table-header {
-  background-color: #e8f5e9;
+  background-color: #EBF5F0;
   font-weight: bold;
 }
 
@@ -258,7 +267,7 @@
 }
 
 .table-header .col-time {
-  color: #1AAD19;
+  color: #B8D4C8;
   font-size: 24rpx;
 }
 
@@ -271,7 +280,7 @@
 }
 
 .table-header .col-content {
-  color: #1AAD19;
+  color: #B8D4C8;
   font-size: 24rpx;
 }
 
@@ -353,15 +362,15 @@
   width: 24rpx;
   height: 24rpx;
   border-radius: 50%;
-  background-color: #1AAD19;
-  border: 4rpx solid #e8f5e9;
+  background-color: #B8D4C8;
+  border: 4rpx solid #EBF5F0;
   flex-shrink: 0;
 }
 
 .timeline-connector {
   flex: 1;
   width: 4rpx;
-  background: linear-gradient(to bottom, #1AAD19 0%, #e0e0e0 100%);
+  background: linear-gradient(to bottom, #B8D4C8 0%, #e0e0e0 100%);
   margin: 8rpx 0;
 }
 
@@ -401,7 +410,7 @@
 }
 
 .time-separator {
-  color: #ccc;
+  color: #C8D5C0;
 }
 
 .time-end {
@@ -502,7 +511,7 @@
   align-items: center;
   gap: 12rpx;
   padding: 16rpx 20rpx;
-  background-color: #f0f9f1;
+  background-color: #EBF5F0;
   border-radius: 12rpx;
   margin-bottom: 16rpx;
   transition: all 0.2s;

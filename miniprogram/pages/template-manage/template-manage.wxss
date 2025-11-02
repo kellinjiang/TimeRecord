@@ -2,20 +2,20 @@
 
 .container {
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: #F5F9F6;
   padding-bottom: 40rpx;
 }
 
 /* 页面提示 */
 .page-tip {
   margin: 24rpx 24rpx 0;
-  background: linear-gradient(135deg, #1296db 0%, #10aeff 100%);
+  background: linear-gradient(135deg, #8FB9A8 0%, #A8C9BA 100%);
   border-radius: 12rpx;
   padding: 20rpx 24rpx;
   display: flex;
   align-items: center;
   gap: 12rpx;
-  box-shadow: 0 2rpx 12rpx rgba(18, 150, 219, 0.15);
+  box-shadow: 0 2rpx 12rpx rgba(143, 185, 168, 0.15);
 }
 
 .tip-icon {
@@ -45,7 +45,7 @@
 .category-item {
   flex-shrink: 0;
   padding: 12rpx 28rpx;
-  background-color: white;
+  background-color: #FAFBF8;
   border-radius: 24rpx;
   font-size: 26rpx;
   color: #666;
@@ -59,16 +59,16 @@
 }
 
 .category-item.active {
-  background: linear-gradient(135deg, #1296db 0%, #10aeff 100%);
+  background: linear-gradient(135deg, #8FB9A8 0%, #A8C9BA 100%);
   color: white;
-  border-color: #1296db;
-  box-shadow: 0 4rpx 12rpx rgba(18, 150, 219, 0.2);
+  border-color: #8FB9A8;
+  box-shadow: 0 4rpx 12rpx rgba(143, 185, 168, 0.2);
 }
 
 /* 区块样式 */
 .section {
   margin: 24rpx;
-  background-color: white;
+  background-color: #FFFFFF;
   border-radius: 16rpx;
   padding: 24rpx;
   box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
@@ -80,7 +80,7 @@
   align-items: center;
   margin-bottom: 20rpx;
   padding-bottom: 16rpx;
-  border-bottom: 2rpx solid #f0f0f0;
+  border-bottom: 2rpx solid #E5F2EC;
 }
 
 .header-left {
@@ -105,18 +105,18 @@
   display: flex;
   align-items: center;
   gap: 8rpx;
-  background-color: #1296db;
+  background-color: #8FB9A8;
   color: white;
   padding: 12rpx 24rpx;
   border-radius: 24rpx;
   font-size: 26rpx;
-  box-shadow: 0 4rpx 12rpx rgba(18, 150, 219, 0.2);
+  box-shadow: 0 4rpx 12rpx rgba(143, 185, 168, 0.2);
   transition: all 0.2s;
 }
 
 .add-btn:active {
   transform: scale(0.95);
-  box-shadow: 0 2rpx 8rpx rgba(18, 150, 219, 0.3);
+  box-shadow: 0 2rpx 8rpx rgba(143, 185, 168, 0.3);
 }
 
 .add-icon {
@@ -139,12 +139,12 @@
   padding: 24rpx;
   background-color: #fafafa;
   border-radius: 12rpx;
-  border-left: 4rpx solid #1296db;
+  border-left: 4rpx solid #8FB9A8;
   transition: all 0.2s;
 }
 
 .template-item.custom {
-  border-left-color: #1AAD19;
+  border-left-color: #B8D4C8;
 }
 
 .template-item:active {
@@ -173,8 +173,8 @@
 
 .template-category {
   padding: 4rpx 12rpx;
-  background-color: #e3f2fd;
-  color: #1296db;
+  background-color: #D8EEF5;
+  color: #8FB9A8;
   font-size: 22rpx;
   border-radius: 8rpx;
 }
@@ -182,7 +182,7 @@
 .template-badge {
   padding: 8rpx 16rpx;
   background-color: #e3f2fd;
-  color: #1296db;
+  color: #8FB9A8;
   font-size: 22rpx;
   border-radius: 8rpx;
   font-weight: bold;
@@ -330,7 +330,7 @@
   align-items: center;
   padding: 32rpx;
   border-bottom: 2rpx solid #f0f0f0;
-  background: linear-gradient(135deg, #1296db 0%, #10aeff 100%);
+  background: linear-gradient(135deg, #8FB9A8 0%, #A8C9BA 100%);
   flex-shrink: 0;
 }
 
@@ -372,7 +372,7 @@
 .form-label {
   display: block;
   font-size: 28rpx;
-  color: #333;
+  color: #2C5F4A;
   margin-bottom: 16rpx;
   font-weight: bold;
 }

@@ -5,10 +5,12 @@
     <view class="week-nav" bindtap="prevWeek">
       <text class="nav-arrow">‹</text>
     </view>
-    <view class="week-picker">
-      <text class="week-range">{{weekRange}}</text>
-      <text class="week-label">第{{weekNumber}}周</text>
-    </view>
+    <picker mode="date" value="{{currentWeekStart}}" bindchange="onDateChange" class="week-picker-trigger">
+      <view class="week-picker">
+        <text class="week-range">{{weekRange}}</text>
+        <text class="week-label">第{{weekNumber}}周</text>
+      </view>
+    </picker>
     <view class="week-nav" bindtap="nextWeek">
       <text class="nav-arrow">›</text>
     </view>
@@ -122,7 +124,7 @@
     <view class="summary-input">
       <textarea
         class="summary-textarea"
-        placeholder="回顾本周的收获和思考...&#10;&#10;提示：&#10;• 本周完成了哪些重要任务？&#10;• 遇到了什么挑战？&#10;• 下周计划做什么？"
+        placeholder="{{summaryPlaceholder}}"
         value="{{summary.content}}"
         bindinput="onSummaryInput"
         bindblur="saveSummary"

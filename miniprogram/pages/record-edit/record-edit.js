@@ -167,28 +167,104 @@ Page({
     // 从全局配置获取默认标签
     const defaultTags = app.globalData.defaultTags || [];
 
-    const tags = defaultTags.map(tag => ({
-      ...tag,
-      selected: false
-    }));
+    // 从数据库加载自定义标签
+    const db = wx.cloud.database();
 
-    this.setData({
-      quickTags: tags.slice(0, 6),  // 前6个作为快速标签
-      allTags: tags
-    });
+    db.collection('tags')
+      .where({
+        isDeleted: db.command.neq(true)
+      })
+      .orderBy('createTime', 'desc')
+      .get({
+        success: (res) => {
+          console.log('加载自定义标签成功', res.data);
+
+          // 合并默认标签和自定义标签
+          const allTags = [...defaultTags, ...res.data].map(tag => ({
+            ...tag,
+            selected: false
+          }));
+
+          this.setData({
+            quickTags: allTags.slice(0, 6),  // 前6个作为快速标签
+            allTags: allTags
+          });
+        },
+        fail: (err) => {
+          console.error('加载自定义标签失败', err);
+
+          // 加载失败时只使用默认标签
+          const tags = defaultTags.map(tag => ({
+            ...tag,
+            selected: false
+          }));
+
+          this.setData({
+            quickTags: tags.slice(0, 6),
+            allTags: tags
+          });
+        }
+      });
   },
 
   // 加载模板
   loadTemplates() {
-    // TODO: 从云数据库加载用户的模板
-    // 目前使用模拟数据
-    this.setData({
-      templates: [
-        { id: 1, name: '🚇 早晨通勤', content: '地铁上听播客' },
-        { id: 2, name: '☕ 午休', content: '午休放松' },
-        { id: 3, name: '💻 代码开发', content: '专注编程' }
-      ]
-    });
+    // 定义默认模板（与模板管理页面保持一致）
+    const defaultTemplates = [
+      {
+        name: '工作日记',
+        category: '工作',
+        content: '今天完成了以下工作：\n1. \n2. \n3. \n\n明天计划：\n1. \n2. ',
+        isDefault: true
+      },
+      {
+        name: '会议记录',
+        category: '工作',
+        content: '会议主题：\n参与人员：\n会议时间：\n\n会议内容：\n\n待办事项：',
+        isDefault: true
+      },
+      {
+        name: '学习笔记',
+        category: '学习',
+        content: '学习内容：\n学习时长：\n\n重点笔记：\n\n心得体会：',
+        isDefault: true
+      }
+    ];
+
+    // 从数据库加载自定义模板
+    const db = wx.cloud.database();
+
+    db.collection('templates')
+      .where({
+        isDeleted: db.command.neq(true)
+      })
+      .orderBy('createTime', 'desc')
+      .get({
+        success: (res) => {
+          console.log('加载自定义模板成功', res.data);
+
+          // 合并默认模板和自定义模板
+          const allTemplates = [
+            ...defaultTemplates,
+            ...res.data.map(t => ({
+              ...t,
+              isDefault: false
+            }))
+          ];
+
+          this.setData({
+            templates: allTemplates
+          });
+        },
+        fail: (err) => {
+          console.error('加载自定义模板失败', err);
+
+          // 加载失败时只使用默认模板
+          this.setData({
+            templates: defaultTemplates
+          });
+        }
+      });
   },
 
   // 时间改变
@@ -332,7 +408,7 @@ Page({
     // 验证数据
     if (!this.data.content.trim()) {
       wx.showToast({
-        title: '请输入日志内容',
+        title: '请输入日记内容',
         icon: 'none'
       });
       return;
@@ -351,7 +427,7 @@ Page({
       .filter(tag => tag.selected)
       .map(tag => ({ name: tag.name, icon: tag.icon, color: tag.color }));
 
-    // 构建日志对象
+    // 构建日记对象
     const record = {
       content: this.data.content.trim(),
       startTime: this.parseTime(this.data.startTime),
@@ -360,7 +436,7 @@ Page({
       source: 'voice'
     };
 
-    console.log('准备保存日志：', record);
+    console.log('准备保存日记：', record);
 
     // 显示加载提示
     wx.showLoading({

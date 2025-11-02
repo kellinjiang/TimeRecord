@@ -1,0 +1,9 @@
+{
+  "name": "auto-fill-sleep",
+  "version": "1.0.0",
+  "description": "自动填充睡眠时间记录",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

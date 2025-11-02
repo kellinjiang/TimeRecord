@@ -2,20 +2,20 @@
 
 .container {
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: #F5F9F6;
   padding-bottom: 40rpx;
 }
 
 /* 页面提示 */
 .page-tip {
   margin: 24rpx 24rpx 0;
-  background: linear-gradient(135deg, #1AAD19 0%, #52c41a 100%);
+  background: linear-gradient(135deg, #B8D4C8 0%, #A8C9BA 100%);
   border-radius: 12rpx;
   padding: 20rpx 24rpx;
   display: flex;
   align-items: center;
   gap: 12rpx;
-  box-shadow: 0 2rpx 12rpx rgba(26, 173, 25, 0.15);
+  box-shadow: 0 2rpx 12rpx rgba(184, 212, 200, 0.15);
 }
 
 .tip-icon {
@@ -32,7 +32,7 @@
 /* 区块样式 */
 .section {
   margin: 24rpx;
-  background-color: white;
+  background-color: #FFFFFF;
   border-radius: 16rpx;
   padding: 24rpx;
   box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
@@ -44,7 +44,7 @@
   align-items: center;
   margin-bottom: 20rpx;
   padding-bottom: 16rpx;
-  border-bottom: 2rpx solid #f0f0f0;
+  border-bottom: 2rpx solid #E5F2EC;
 }
 
 .header-left {
@@ -61,7 +61,7 @@
 
 .section-subtitle {
   font-size: 24rpx;
-  color: #999;
+  color: #6B9480;
 }
 
 /* 添加按钮 */
@@ -69,18 +69,18 @@
   display: flex;
   align-items: center;
   gap: 8rpx;
-  background-color: #1AAD19;
+  background-color: #B8D4C8;
   color: white;
   padding: 12rpx 24rpx;
   border-radius: 24rpx;
   font-size: 26rpx;
-  box-shadow: 0 4rpx 12rpx rgba(26, 173, 25, 0.2);
+  box-shadow: 0 4rpx 12rpx rgba(184, 212, 200, 0.2);
   transition: all 0.2s;
 }
 
 .add-btn:active {
   transform: scale(0.95);
-  box-shadow: 0 2rpx 8rpx rgba(26, 173, 25, 0.3);
+  box-shadow: 0 2rpx 8rpx rgba(184, 212, 200, 0.3);
 }
 
 .add-icon {
@@ -146,8 +146,8 @@
 /* 标签徽章 */
 .tag-badge {
   padding: 8rpx 16rpx;
-  background-color: #e8f5e9;
-  color: #1AAD19;
+  background-color: #EBF5F0;
+  color: #B8D4C8;
   font-size: 22rpx;
   border-radius: 8rpx;
   font-weight: bold;
@@ -260,7 +260,7 @@
   align-items: center;
   padding: 32rpx;
   border-bottom: 2rpx solid #f0f0f0;
-  background: linear-gradient(135deg, #1AAD19 0%, #52c41a 100%);
+  background: linear-gradient(135deg, #B8D4C8 0%, #A8C9BA 100%);
 }
 
 .modal-title {
@@ -301,7 +301,7 @@
 .form-label {
   display: block;
   font-size: 28rpx;
-  color: #333;
+  color: #2C5F4A;
   margin-bottom: 16rpx;
   font-weight: bold;
 }
@@ -317,7 +317,7 @@
 }
 
 .form-input:focus {
-  border-color: #1AAD19;
+  border-color: #B8D4C8;
   background-color: white;
 }
 
@@ -438,7 +438,7 @@
 }
 
 .cancel-btn {
-  color: #666;
+  color: #6B7A68;
   border-right: 2rpx solid #f0f0f0;
 }
 

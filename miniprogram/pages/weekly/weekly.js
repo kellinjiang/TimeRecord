@@ -21,7 +21,10 @@ Page({
     summary: {
       content: '',
       _id: null
-    }
+    },
+
+    // 周总结placeholder
+    summaryPlaceholder: '回顾本周的收获和思考...\n\n提示：\n• 本周完成了哪些重要任务？\n• 遇到了什么挑战？\n• 下周计划做什么？'
   },
 
   onLoad(options) {
@@ -135,6 +138,14 @@ Page({
     }
 
     this.setCurrentWeek(nextWeek);
+    this.loadWeeklyData();
+  },
+
+  // 日期改变（日期选择器）
+  onDateChange(e) {
+    const selectedDate = new Date(e.detail.value);
+    const weekStart = this.getWeekStart(selectedDate);
+    this.setCurrentWeek(weekStart);
     this.loadWeeklyData();
   },
 

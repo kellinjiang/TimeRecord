@@ -269,8 +269,8 @@ Page({
     // 转换为数组并排序
     const tagArray = Object.values(tagMap).sort((a, b) => b.minutes - a.minutes);
 
-    // 找出最大时长（用于计算柱状图高度）
-    const maxMinutes = tagArray.length > 0 ? tagArray[0].minutes : 0;
+    // 找出最大时长（用于计算柱状图高度），限制最大为24小时（1440分钟）
+    const maxMinutes = tagArray.length > 0 ? Math.min(tagArray[0].minutes, 1440) : 0;
     const maxHours = maxMinutes / 60;
 
     // 计算Y轴刻度
@@ -280,7 +280,9 @@ Page({
     const tagStats = tagArray.map(tag => {
       const hours = (tag.minutes / 60).toFixed(1);
       const percentage = totalMinutes > 0 ? ((tag.minutes / totalMinutes) * 100).toFixed(1) : 0;
-      const barHeight = maxMinutes > 0 ? ((tag.minutes / maxMinutes) * 100).toFixed(0) : 0;
+      // 限制单个标签时长不超过24小时用于显示柱状图
+      const displayMinutes = Math.min(tag.minutes, 1440);
+      const barHeight = maxMinutes > 0 ? ((displayMinutes / maxMinutes) * 100).toFixed(0) : 0;
 
       return {
         ...tag,
@@ -301,25 +303,32 @@ Page({
 
   // 计算Y轴刻度标签
   calculateYAxisLabels(maxHours) {
-    if (maxHours <= 0) {
+    // 限制最大小时数为24小时
+    const limitedMaxHours = Math.min(maxHours, 24);
+
+    if (limitedMaxHours <= 0) {
       return [0];
     }
 
     // 根据最大值确定刻度间隔
     let interval = 1; // 默认1小时
-    if (maxHours <= 2) {
+    if (limitedMaxHours <= 2) {
       interval = 0.5;
-    } else if (maxHours <= 5) {
+    } else if (limitedMaxHours <= 5) {
       interval = 1;
-    } else if (maxHours <= 10) {
+    } else if (limitedMaxHours <= 10) {
       interval = 2;
+    } else if (limitedMaxHours <= 15) {
+      interval = 3;
+    } else if (limitedMaxHours <= 20) {
+      interval = 4;
     } else {
-      interval = Math.ceil(maxHours / 5);
+      interval = 6;
     }
 
     // 生成刻度标签（从大到小）
     const labels = [];
-    const maxLabel = Math.ceil(maxHours / interval) * interval;
+    const maxLabel = Math.ceil(limitedMaxHours / interval) * interval;
 
     for (let i = maxLabel; i >= 0; i -= interval) {
       labels.push(i);

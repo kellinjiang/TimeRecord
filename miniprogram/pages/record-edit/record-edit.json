@@ -1,7 +1,7 @@
 {
-  "navigationBarTitleText": "编辑日志",
-  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTitleText": "编辑日记",
+  "navigationBarBackgroundColor": "#F5F9F6",
   "navigationBarTextStyle": "black",
-  "backgroundColor": "#f5f5f5",
+  "backgroundColor": "#F5F9F6",
   "enablePullDownRefresh": false
 }

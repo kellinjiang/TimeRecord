@@ -5,10 +5,17 @@
     <view class="date-nav" bindtap="prevDay">
       <text class="nav-arrow">‹</text>
     </view>
-    <view class="date-picker" bindtap="showDatePicker">
-      <text class="current-date">{{currentDateStr}}</text>
-      <text class="week-day">{{weekDayStr}}</text>
-    </view>
+    <picker
+      mode="date"
+      value="{{currentDate}}"
+      bindchange="onDateChange"
+      class="date-picker-trigger"
+    >
+      <view class="date-picker">
+        <text class="current-date">{{currentDateStr}}</text>
+        <text class="week-day">{{weekDayStr}}</text>
+      </view>
+    </picker>
     <view class="date-nav" bindtap="nextDay">
       <text class="nav-arrow">›</text>
     </view>
@@ -173,13 +180,3 @@
     </view>
   </view>
 </view>
-
-<!-- 日期选择器（隐藏的picker） -->
-<picker
-  mode="date"
-  value="{{currentDate}}"
-  bindchange="onDateChange"
-  id="datePicker"
-  hidden
->
-</picker>
