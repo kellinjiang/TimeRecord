@@ -7,6 +7,9 @@ Page({
       avatarUrl: ''
     },
 
+    // ✅ 是否已登录
+    isLoggedIn: false,
+
     // 用户使用天数
     usageDays: 0,
 
@@ -32,8 +35,11 @@ Page({
     // 加载用户信息
     this.loadUserInfo();
 
-    // 加载统计数据
-    this.loadStatistics();
+    // ✅ 只有登录状态下才加载统计数据
+    const app = getApp();
+    if (app.globalData.userInfo) {
+      this.loadStatistics();
+    }
   },
 
   onShow() {
@@ -46,8 +52,10 @@ Page({
     // 加载用户信息
     this.loadUserInfo();
 
-    // 每次显示页面时刷新数据
-    this.loadStatistics();
+    // ✅ 只有登录状态下才加载统计数据
+    if (app.globalData.userInfo) {
+      this.loadStatistics();
+    }
   },
 
   // 下拉刷新
@@ -78,15 +86,22 @@ Page({
       console.log('设置用户信息:', displayData);
 
       this.setData({
-        userInfo: displayData
+        userInfo: displayData,
+        isLoggedIn: true  // ✅ 已登录
       });
 
       console.log('页面数据已更新，当前 userInfo:', this.data.userInfo);
     } else {
-      // 如果全局数据中没有，尝试从数据库加载
-      console.log('⚠️ globalData 中无用户信息，从数据库加载...');
+      // ✅ 游客模式：不从数据库加载，直接显示未登录
+      console.log('⚠️ 游客模式，显示未登录状态');
 
-      this.loadUserInfoFromDB();
+      this.setData({
+        userInfo: {
+          nickName: '未登录',
+          avatarUrl: ''
+        },
+        isLoggedIn: false  // ✅ 未登录
+      });
     }
   },
 
@@ -442,8 +457,32 @@ Page({
     return `${year}-${month}-${day}`;
   },
 
+  // ✅ 检查登录状态
+  checkLogin() {
+    const app = getApp();
+    if (!app.globalData.userInfo) {
+      wx.showModal({
+        title: '需要登录',
+        content: '该功能需要登录后才能使用，是否前往登录？',
+        confirmText: '去登录',
+        cancelText: '取消',
+        success: (res) => {
+          if (res.confirm) {
+            wx.navigateTo({
+              url: '/pages/login/login'
+            });
+          }
+        }
+      });
+      return false;
+    }
+    return true;
+  },
+
   // 跳转到备忘录管理
   goToMemoManage() {
+    if (!this.checkLogin()) return;
+
     wx.navigateTo({
       url: '/pages/memo-list/memo-list'
     });
@@ -451,6 +490,8 @@ Page({
 
   // 跳转到标签管理
   goToTagManage() {
+    if (!this.checkLogin()) return;
+
     wx.navigateTo({
       url: '/pages/tag-manage/tag-manage'
     });
@@ -458,6 +499,8 @@ Page({
 
   // 跳转到模板管理
   goToTemplateManage() {
+    if (!this.checkLogin()) return;
+
     wx.navigateTo({
       url: '/pages/template-manage/template-manage'
     });
@@ -465,6 +508,8 @@ Page({
 
   // 跳转到数据统计
   goToDataStats() {
+    if (!this.checkLogin()) return;
+
     wx.navigateTo({
       url: '/pages/data-stats/data-stats'
     });
@@ -472,6 +517,8 @@ Page({
 
   // 数据备份
   backupData() {
+    if (!this.checkLogin()) return;
+
     wx.showModal({
       title: '数据备份',
       content: '是否将数据备份到云端？',
@@ -522,118 +569,19 @@ Page({
     });
   },
 
-  // 重新授权
-  reAuthorize() {
-    wx.showModal({
-      title: '重新授权',
-      content: '将重新获取您的微信头像和昵称等信息',
-      success: (res) => {
-        if (res.confirm) {
-          // 调用微信授权
-          wx.getUserProfile({
-            desc: '用于刷新用户资料',
-            success: (profileRes) => {
-              const userInfo = profileRes.userInfo;
-              console.log('重新获取用户信息成功', userInfo);
-
-              wx.showLoading({
-                title: '更新中...',
-                mask: true
-              });
-
-              // 更新数据库中的用户信息
-              const db = wx.cloud.database();
-              db.collection('users')
-                .where({
-                  _openid: '{openid}'
-                })
-                .limit(1)
-                .get({
-                  success: (queryRes) => {
-                    if (queryRes.data.length > 0) {
-                      const userId = queryRes.data[0]._id;
-
-                      // 更新用户信息
-                      db.collection('users')
-                        .doc(userId)
-                        .update({
-                          data: {
-                            nickName: userInfo.nickName,
-                            avatarUrl: userInfo.avatarUrl,
-                            gender: userInfo.gender,
-                            language: userInfo.language,
-                            country: userInfo.country,
-                            province: userInfo.province,
-                            city: userInfo.city,
-                            updateTime: new Date()
-                          },
-                          success: () => {
-                            console.log('用户信息更新成功');
-
-                            // 更新全局数据
-                            const app = getApp();
-                            app.globalData.userInfo = {
-                              ...app.globalData.userInfo,
-                              nickName: userInfo.nickName,
-                              avatarUrl: userInfo.avatarUrl,
-                              gender: userInfo.gender,
-                              language: userInfo.language,
-                              country: userInfo.country,
-                              province: userInfo.province,
-                              city: userInfo.city
-                            };
-
-                            // 刷新页面数据
-                            this.loadUserInfo();
-
-                            wx.hideLoading();
-                            wx.showToast({
-                              title: '授权成功',
-                              icon: 'success'
-                            });
-                          },
-                          fail: (err) => {
-                            console.error('用户信息更新失败', err);
-                            wx.hideLoading();
-                            wx.showToast({
-                              title: '更新失败',
-                              icon: 'none'
-                            });
-                          }
-                        });
-                    } else {
-                      wx.hideLoading();
-                      wx.showToast({
-                        title: '用户不存在',
-                        icon: 'none'
-                      });
-                    }
-                  },
-                  fail: (err) => {
-                    console.error('查询用户失败', err);
-                    wx.hideLoading();
-                    wx.showToast({
-                      title: '查询失败',
-                      icon: 'none'
-                    });
-                  }
-                });
-            },
-            fail: (err) => {
-              console.error('获取用户信息失败', err);
-              wx.showToast({
-                title: '授权失败',
-                icon: 'none'
-              });
-            }
-          });
-        }
-      }
-    });
-  },
-
-  // 退出登录
+  // 退出登录 / 去登录
   logout() {
+    const app = getApp();
+
+    // ✅ 如果是游客模式，直接跳转到登录页
+    if (!app.globalData.userInfo) {
+      wx.navigateTo({
+        url: '/pages/login/login'
+      });
+      return;
+    }
+
+    // 已登录状态，执行退出登录
     wx.showModal({
       title: '退出登录',
       content: '确定要退出登录吗？',
@@ -647,11 +595,13 @@ Page({
           });
 
           // 清除全局用户信息
-          const app = getApp();
           app.globalData.userInfo = null;
 
           // 设置退出登录标记，防止自动跳转
           app.globalData.isLogout = true;
+
+          // ✅ 清除游客模式标志
+          app.globalData.isGuestMode = false;
 
           // 清除本地存储（可选）
           try {

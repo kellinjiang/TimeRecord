@@ -453,6 +453,26 @@ Page({
 
   // 保存
   onSave() {
+    const app = getApp();
+
+    // ✅ 检查登录状态
+    if (!app.globalData.userInfo) {
+      wx.showModal({
+        title: '需要登录',
+        content: '登录后可保存您的时间记录，是否前往登录?',
+        confirmText: '去登录',
+        cancelText: '暂不登录',
+        success: (res) => {
+          if (res.confirm) {
+            wx.navigateTo({
+              url: '/pages/login/login'
+            });
+          }
+        }
+      });
+      return;
+    }
+
     // 验证数据
     if (!this.data.content.trim()) {
       wx.showToast({

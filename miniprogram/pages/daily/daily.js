@@ -131,6 +131,22 @@ Page({
 
   // 加载当日数据
   loadDailyData() {
+    // ✅ 检查游客模式
+    const app = getApp();
+    if (!app.globalData.userInfo || app.globalData.isGuestMode) {
+      console.log('游客模式，不加载数据');
+      this.setData({
+        records: [],
+        stats: {
+          totalRecords: 0,
+          totalHours: 0,
+          completedRecords: 0,
+          tagStats: []
+        }
+      });
+      return;
+    }
+
     wx.showLoading({
       title: '加载中...',
       mask: true

@@ -19,6 +19,22 @@ Page({
   },
 
   onLoad() {
+    // ✅ 静默检查登录状态（不跳转）
+    const app = getApp();
+    if (app.checkLoginStatusSilent) {
+      app.checkLoginStatusSilent((isLoggedIn, userInfo) => {
+        console.log('首页登录状态:', isLoggedIn);
+        if (isLoggedIn) {
+          // 已登录，可以加载用户数据
+          this.loadRecentRecords();
+          this.loadTodayMemos();
+        } else {
+          // 未登录，游客模式，不加载数据
+          console.log('游客模式，可体验录音功能');
+        }
+      });
+    }
+
     this.updateTime();
     this.timeInterval = setInterval(() => {
       this.updateTime();
@@ -26,12 +42,6 @@ Page({
 
     // 初始化录音管理器
     this.initRecorder();
-
-    // 加载最近记录
-    this.loadRecentRecords();
-
-    // 加载今日待办
-    this.loadTodayMemos();
   },
 
   onUnload() {
@@ -41,11 +51,17 @@ Page({
   },
 
   onShow() {
-    // 每次显示页面时刷新最近记录
-    this.loadRecentRecords();
+    // ✅ 只在登录状态下刷新数据
+    const app = getApp();
+    if (app.globalData.userInfo) {
+      // 每次显示页面时刷新最近记录
+      this.loadRecentRecords();
 
-    // 刷新今日待办
-    this.loadTodayMemos();
+      // 刷新今日待办
+      this.loadTodayMemos();
+    } else {
+      console.log('游客模式，不加载数据');
+    }
   },
 
   // 更新时间显示

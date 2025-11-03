@@ -151,6 +151,22 @@ Page({
 
   // 加载本周数据
   loadWeeklyData() {
+    // ✅ 检查游客模式
+    const app = getApp();
+    if (!app.globalData.userInfo || app.globalData.isGuestMode) {
+      console.log('游客模式，不加载数据');
+      this.setData({
+        weekDays: this.generateEmptyWeekDays(),
+        stats: {
+          totalRecords: 0,
+          totalHours: 0,
+          avgHours: 0,
+          tagStats: []
+        }
+      });
+      return;
+    }
+
     wx.showLoading({
       title: '加载中...',
       mask: true
@@ -169,6 +185,33 @@ Page({
         icon: 'none'
       });
     });
+  },
+
+  // 生成空的7天数据
+  generateEmptyWeekDays() {
+    const weekDays = [];
+    const weekStart = new Date(this.data.currentWeekStart);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(weekStart);
+      date.setDate(date.getDate() + i);
+      const dateStr = this.formatDate(date);
+      const isToday = date.getTime() === today.getTime();
+
+      weekDays.push({
+        date: dateStr,
+        dayLabel: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'][i],
+        dateLabel: `${date.getMonth() + 1}/${date.getDate()}`,
+        hours: 0,
+        percentage: 0,
+        recordCount: 0,
+        isToday: isToday
+      });
+    }
+
+    return weekDays;
   },
 
   // 加载本周记录

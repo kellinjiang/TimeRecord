@@ -50,43 +50,48 @@
   width: 100%;
   background-color: white;
   border-radius: 24rpx;
-  padding: 40rpx 32rpx;
+  padding: 48rpx 40rpx;
   margin-bottom: 32rpx;
-  box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
 }
 
 .form-title {
-  font-size: 32rpx;
+  font-size: 36rpx;
   font-weight: bold;
   color: #2C5F4A;
   text-align: center;
-  margin-bottom: 32rpx;
+  margin-bottom: 40rpx;
 }
 
 /* 头像选择 */
 .avatar-section {
-  margin-bottom: 32rpx;
+  margin-bottom: 40rpx;
 }
 
 .section-label {
-  font-size: 28rpx;
+  font-size: 30rpx;
   color: #333;
-  margin-bottom: 16rpx;
-  font-weight: 500;
+  margin-bottom: 20rpx;
+  font-weight: 600;
 }
 
 .avatar-btn {
-  width: 160rpx;
-  height: 160rpx;
+  width: 180rpx;
+  height: 180rpx;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #F5F9F6;
-  border-radius: 80rpx;
-  border: 2rpx dashed #B8D4C8;
+  border-radius: 90rpx;
+  border: 3rpx dashed #B8D4C8;
   padding: 0;
   overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.avatar-btn:active {
+  transform: scale(0.95);
 }
 
 .avatar-btn::after {
@@ -103,24 +108,25 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8rpx;
+  gap: 12rpx;
 }
 
 .avatar-placeholder-icon {
-  font-size: 64rpx;
+  font-size: 72rpx;
   color: #B8D4C8;
 }
 
 .avatar-placeholder-text {
-  font-size: 24rpx;
+  font-size: 26rpx;
   color: #999;
+  font-weight: 500;
 }
 
 .section-tips {
-  font-size: 22rpx;
+  font-size: 24rpx;
   color: #999;
   text-align: center;
-  margin-top: 12rpx;
+  margin-top: 16rpx;
 }
 
 /* 昵称输入 */
@@ -130,19 +136,21 @@
 
 .nickname-input {
   width: 100%;
-  height: 88rpx;
+  height: 96rpx;
   background-color: #F5F9F6;
   border-radius: 16rpx;
-  padding: 0 24rpx;
-  font-size: 28rpx;
+  padding: 0 28rpx;
+  font-size: 30rpx;
   color: #333;
   border: 2rpx solid transparent;
   transition: all 0.3s;
+  box-sizing: border-box;
 }
 
 .nickname-input:focus {
   background-color: white;
   border-color: #B8D4C8;
+  box-shadow: 0 0 0 4rpx rgba(184, 212, 200, 0.1);
 }
 
 /* 功能介绍 */
@@ -213,20 +221,81 @@
   color: #2C5F4A;
 }
 
-.privacy-tips {
+/* 隐私政策复选框 */
+.privacy-section {
+  width: 100%;
+  margin-bottom: 24rpx;
+}
+
+.privacy-checkbox {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 16rpx;
+  padding: 20rpx 24rpx;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 16rpx;
+  border: 2rpx solid rgba(255, 255, 255, 0.2);
+}
+
+/* 自定义复选框 */
+.custom-checkbox {
+  flex-shrink: 0;
+  width: 44rpx;
+  height: 44rpx;
+  border: 3rpx solid rgba(255, 255, 255, 0.6);
+  border-radius: 8rpx;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.custom-checkbox.checked {
+  background-color: #2C5F4A;
+  border-color: #2C5F4A;
+}
+
+.checkbox-icon {
+  font-size: 32rpx;
+  color: white;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.privacy-content {
+  flex: 1;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 8rpx;
+  align-items: center;
+  gap: 4rpx;
+  line-height: 44rpx;
 }
 
-.tips-text {
-  font-size: 24rpx;
-  color: rgba(255, 255, 255, 0.7);
+.privacy-text {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.95);
 }
 
-.tips-link {
-  font-size: 24rpx;
+.privacy-link {
+  font-size: 28rpx;
   color: white;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+/* 跳过登录按钮 */
+.skip-login {
+  width: 100%;
+  padding: 20rpx 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.skip-text {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: underline;
 }

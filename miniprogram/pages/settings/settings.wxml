@@ -140,18 +140,6 @@
         </view>
       </view>
 
-      <!-- 重新授权 -->
-      <view class="menu-item" bindtap="reAuthorize">
-        <view class="menu-left">
-          <view class="menu-icon">🔄</view>
-          <view class="menu-text">重新授权</view>
-        </view>
-        <view class="menu-right">
-          <text class="menu-desc">刷新用户信息</text>
-          <text class="menu-arrow">›</text>
-        </view>
-      </view>
-
       <!-- 关于我们 -->
       <view class="menu-item" bindtap="showAbout">
         <view class="menu-left">
@@ -164,11 +152,11 @@
         </view>
       </view>
 
-      <!-- 退出登录 -->
+      <!-- 退出登录 / 去登录 -->
       <view class="menu-item" bindtap="logout">
         <view class="menu-left">
-          <view class="menu-icon">🚪</view>
-          <view class="menu-text menu-text-danger">退出登录</view>
+          <view class="menu-icon">{{isLoggedIn ? '🚪' : '🔑'}}</view>
+          <view class="menu-text {{isLoggedIn ? 'menu-text-danger' : ''}}">{{isLoggedIn ? '退出登录' : '去登录'}}</view>
         </view>
         <view class="menu-right">
           <text class="menu-arrow">›</text>
