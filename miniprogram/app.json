@@ -10,7 +10,9 @@
     "pages/tag-manage/tag-manage",
     "pages/template-manage/template-manage",
     "pages/data-stats/data-stats",
-    "pages/about/about"
+    "pages/about/about",
+    "pages/memo-list/memo-list",
+    "pages/memo-edit/memo-edit"
   ],
   "window": {
     "navigationBarBackgroundColor": "#1a1a1a",

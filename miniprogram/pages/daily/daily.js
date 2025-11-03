@@ -165,6 +165,11 @@ Page({
       const dateEnd = new Date(this.data.currentDate);
       dateEnd.setHours(23, 59, 59, 999);
 
+      console.log('========== 日视图查询条件 ==========');
+      console.log('查询日期:', this.data.currentDate);
+      console.log('开始时间:', dateStart);
+      console.log('结束时间:', dateEnd);
+
       db.collection('records')
         .where({
           startTime: _.gte(dateStart).and(_.lte(dateEnd)),
@@ -173,7 +178,12 @@ Page({
         .orderBy('startTime', 'asc')
         .get({
           success: (res) => {
-            console.log('查询成功', res);
+            console.log('查询成功，记录数量:', res.data.length);
+
+            // 打印每条记录的 startTime 用于调试
+            res.data.forEach((record, index) => {
+              console.log(`记录${index + 1} - startTime:`, new Date(record.startTime), 'updateTime:', new Date(record.updateTime || record.createTime));
+            });
 
             // 格式化记录数据
             const records = res.data.map(item => this.formatRecord(item));
@@ -199,7 +209,18 @@ Page({
   // 格式化记录
   formatRecord(record) {
     const startTime = new Date(record.startTime);
-    const endTime = record.endTime ? new Date(record.endTime) : null;
+    let endTime = record.endTime ? new Date(record.endTime) : null;
+
+    // 获取当天的结束时间（23:59:59）
+    const dayEnd = new Date(this.data.currentDate);
+    dayEnd.setHours(23, 59, 59, 999);
+
+    // 如果endTime超出当天范围，截断到当天结束
+    let isEndTimeTruncated = false;
+    if (endTime && endTime > dayEnd) {
+      endTime = dayEnd;
+      isEndTimeTruncated = true;
+    }
 
     // 格式化时间
     const startTimeStr = this.formatTime(startTime);
@@ -211,6 +232,11 @@ Page({
     if (endTime) {
       duration = Math.floor((endTime - startTime) / 60000); // 分钟
       durationStr = this.formatDuration(duration);
+
+      // 如果时间被截断，在时长后面加上标记
+      if (isEndTimeTruncated) {
+        durationStr += '+';
+      }
     }
 
     return {
@@ -218,7 +244,8 @@ Page({
       startTimeStr,
       endTimeStr,
       duration,
-      durationStr
+      durationStr,
+      isEndTimeTruncated  // 标记时间是否被截断
     };
   },
 

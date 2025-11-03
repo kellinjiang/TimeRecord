@@ -45,25 +45,70 @@
 }
 
 /* 时间选择器 */
+.time-range-container {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.time-picker-wrapper {
+  flex: 1;
+}
+
 .time-picker {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 28rpx 24rpx;
+  flex-direction: column;
+  gap: 8rpx;
+  padding: 20rpx 24rpx;
   background-color: #FFFFFF;
-  border-radius: 20rpx;
+  border-radius: 16rpx;
   border: 2rpx solid #E5F2EC;
+  transition: all 0.3s ease;
+}
+
+.time-picker:active {
+  background-color: #F5F9F6;
+  border-color: #B8D4C8;
+}
+
+.time-label {
+  font-size: 22rpx;
+  color: #8FB9A8;
 }
 
 .time-value {
-  font-size: 34rpx;
+  font-size: 30rpx;
   color: #4A5248;
   font-weight: 500;
 }
 
-.arrow {
-  font-size: 40rpx;
+.time-value.placeholder {
   color: #A8C9BA;
+  font-weight: normal;
+}
+
+.time-separator {
+  font-size: 28rpx;
+  color: #A8C9BA;
+  flex-shrink: 0;
+}
+
+.time-actions {
+  margin-top: 16rpx;
+  text-align: right;
+}
+
+.clear-time {
+  font-size: 24rpx;
+  color: #8FB9A8;
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  background-color: #EBF5F0;
+  display: inline-block;
+}
+
+.clear-time:active {
+  background-color: #E5F2EC;
 }
 
 /* 内容输入框 */

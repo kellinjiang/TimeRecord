@@ -1,0 +1,229 @@
+/* pages/memo-list/memo-list.wxss */
+.container {
+  min-height: 100vh;
+  background-color: #F5F9F6;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 筛选栏 */
+.filter-bar {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  padding: 24rpx 24rpx 16rpx;
+  gap: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.filter-item {
+  flex: 1;
+  text-align: center;
+  padding: 16rpx 24rpx;
+  border-radius: 24rpx;
+  font-size: 28rpx;
+  color: #666;
+  background-color: #F5F9F6;
+  transition: all 0.3s;
+}
+
+.filter-item.active {
+  background-color: #B8D4C8;
+  color: white;
+  font-weight: bold;
+}
+
+/* 滚动区域 */
+.memo-scroll {
+  flex: 1;
+  padding: 16rpx 0;
+}
+
+/* 时间分组 */
+.time-group {
+  margin-bottom: 24rpx;
+}
+
+.group-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #2C5F4A;
+  padding: 16rpx 24rpx;
+}
+
+/* 备忘录列表 */
+.memo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  padding: 0 24rpx;
+}
+
+/* 备忘录项 */
+.memo-item {
+  background-color: white;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+  transition: all 0.3s;
+}
+
+.memo-item:active {
+  transform: scale(0.98);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
+}
+
+.memo-item.completed {
+  opacity: 0.6;
+}
+
+.memo-item.completed .memo-title,
+.memo-item.completed .memo-content {
+  text-decoration: line-through;
+  color: #999;
+}
+
+/* 左侧内容 */
+.memo-left {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+}
+
+/* 优先级标签 */
+.priority-badge {
+  flex-shrink: 0;
+  padding: 4rpx 12rpx;
+  border-radius: 12rpx;
+  font-size: 22rpx;
+  color: white;
+  font-weight: bold;
+}
+
+.priority-1 {
+  background-color: #2ECC71;
+}
+
+.priority-2 {
+  background-color: #F39C12;
+}
+
+.priority-3 {
+  background-color: #FF5733;
+}
+
+/* 备忘录信息 */
+.memo-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.memo-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.memo-title {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.memo-content {
+  font-size: 24rpx;
+  color: #666;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* 右侧完成按钮 */
+.memo-right {
+  flex-shrink: 0;
+}
+
+.check-btn {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 28rpx;
+  border: 3rpx solid #B8D4C8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.check-btn.checked {
+  background-color: #B8D4C8;
+  border-color: #B8D4C8;
+}
+
+.check-icon {
+  font-size: 32rpx;
+  color: white;
+  font-weight: bold;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 48rpx;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 24rpx;
+  opacity: 0.5;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  color: #999;
+  margin-bottom: 12rpx;
+}
+
+.empty-tip {
+  font-size: 24rpx;
+  color: #CCC;
+}
+
+/* 新增按钮 */
+.add-btn {
+  position: fixed;
+  right: 32rpx;
+  bottom: 32rpx;
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 56rpx;
+  background: linear-gradient(135deg, #B8D4C8 0%, #A8C9BA 100%);
+  box-shadow: 0 8rpx 24rpx rgba(184, 212, 200, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.add-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 4rpx 16rpx rgba(184, 212, 200, 0.5);
+}
+
+.add-icon {
+  font-size: 56rpx;
+  color: white;
+  font-weight: bold;
+  line-height: 1;
+}

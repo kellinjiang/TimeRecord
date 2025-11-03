@@ -65,6 +65,17 @@
   <view class="menu-section">
     <view class="section-title">⚙️ 功能管理</view>
     <view class="menu-list">
+      <!-- 备忘录管理 -->
+      <view class="menu-item" bindtap="goToMemoManage">
+        <view class="menu-left">
+          <view class="menu-icon">📝</view>
+          <view class="menu-text">备忘录管理</view>
+        </view>
+        <view class="menu-right">
+          <text class="menu-arrow">›</text>
+        </view>
+      </view>
+
       <!-- 标签管理 -->
       <view class="menu-item" bindtap="goToTagManage">
         <view class="menu-left">

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "备忘录管理",
+  "navigationBarBackgroundColor": "#B8D4C8",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#F5F9F6",
+  "enablePullDownRefresh": true
+}

@@ -442,6 +442,13 @@ Page({
     return `${year}-${month}-${day}`;
   },
 
+  // 跳转到备忘录管理
+  goToMemoManage() {
+    wx.navigateTo({
+      url: '/pages/memo-list/memo-list'
+    });
+  },
+
   // 跳转到标签管理
   goToTagManage() {
     wx.navigateTo({

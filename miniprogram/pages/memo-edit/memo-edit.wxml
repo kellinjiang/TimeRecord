@@ -1,0 +1,120 @@
+<!--pages/memo-edit/memo-edit.wxml-->
+<view class="container">
+  <scroll-view class="form-scroll" scroll-y>
+    <!-- 标题 -->
+    <view class="form-section">
+      <view class="section-label">
+        <text class="label-text">标题</text>
+        <text class="required">*</text>
+      </view>
+      <input
+        class="input-field"
+        type="text"
+        placeholder="请输入备忘录标题"
+        value="{{formData.title}}"
+        bindinput="onTitleInput"
+        maxlength="50"
+      />
+    </view>
+
+    <!-- 提醒时间 -->
+    <view class="form-section">
+      <view class="section-label">
+        <text class="label-text">提醒时间</text>
+        <text class="required">*</text>
+      </view>
+      <view class="time-picker-row">
+        <picker
+          mode="date"
+          value="{{formData.reminderDate}}"
+          start="{{todayDate}}"
+          bindchange="onDateChange"
+        >
+          <view class="picker-field">
+            <text class="picker-text">{{formData.reminderDate || '选择日期'}}</text>
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+        <picker
+          mode="time"
+          value="{{formData.reminderTimeStr}}"
+          bindchange="onTimeChange"
+        >
+          <view class="picker-field">
+            <text class="picker-text">{{formData.reminderTimeStr || '选择时间'}}</text>
+            <text class="picker-arrow">›</text>
+          </view>
+        </picker>
+      </view>
+    </view>
+
+    <!-- 优先级 -->
+    <view class="form-section">
+      <view class="section-label">
+        <text class="label-text">优先级</text>
+      </view>
+      <view class="priority-buttons">
+        <view
+          class="priority-btn priority-1 {{formData.priority === 1 ? 'active' : ''}}"
+          bindtap="onPriorityChange"
+          data-priority="1"
+        >
+          <text>低</text>
+        </view>
+        <view
+          class="priority-btn priority-2 {{formData.priority === 2 ? 'active' : ''}}"
+          bindtap="onPriorityChange"
+          data-priority="2"
+        >
+          <text>中</text>
+        </view>
+        <view
+          class="priority-btn priority-3 {{formData.priority === 3 ? 'active' : ''}}"
+          bindtap="onPriorityChange"
+          data-priority="3"
+        >
+          <text>高</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 备注 -->
+    <view class="form-section">
+      <view class="section-label">
+        <text class="label-text">备注</text>
+        <text class="optional">(可选)</text>
+      </view>
+      <textarea
+        class="textarea-field"
+        placeholder="添加详细说明..."
+        value="{{formData.content}}"
+        bindinput="onContentInput"
+        maxlength="200"
+        auto-height
+      />
+      <view class="char-count">{{formData.content.length}}/200</view>
+    </view>
+
+    <!-- 底部占位 -->
+    <view style="height: 120rpx;"></view>
+  </scroll-view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <button class="cancel-btn" bindtap="cancel">取消</button>
+    <button
+      class="save-btn"
+      bindtap="saveMemo"
+      disabled="{{!canSave}}"
+    >
+      {{memoId ? '更新' : '保存'}}
+    </button>
+  </view>
+
+  <!-- 删除按钮（仅编辑时显示） -->
+  <view class="delete-section" wx:if="{{memoId}}">
+    <button class="delete-btn" bindtap="deleteMemo">
+      <text>🗑️ 删除备忘录</text>
+    </button>
+  </view>
+</view>

@@ -10,7 +10,12 @@ Page({
     recordText: '按住录音',
     statusTip: '',
     recentRecords: [],
-    tempFilePath: ''    // 录音文件路径
+    tempFilePath: '',    // 录音文件路径
+
+    // 备忘录相关
+    todayMemos: [],          // 今日待办
+    memoCardExpanded: false, // 卡片是否展开
+    displayMemos: []         // 显示的备忘录（前3条）
   },
 
   onLoad() {
@@ -24,6 +29,9 @@ Page({
 
     // 加载最近记录
     this.loadRecentRecords();
+
+    // 加载今日待办
+    this.loadTodayMemos();
   },
 
   onUnload() {
@@ -35,6 +43,9 @@ Page({
   onShow() {
     // 每次显示页面时刷新最近记录
     this.loadRecentRecords();
+
+    // 刷新今日待办
+    this.loadTodayMemos();
   },
 
   // 更新时间显示
@@ -311,5 +322,121 @@ Page({
     wx.navigateTo({
       url: `/pages/daily/daily?recordId=${id}`
     });
+  },
+
+  // ========== 备忘录相关方法 ==========
+
+  // 加载今日待办
+  loadTodayMemos() {
+    const db = wx.cloud.database();
+    const _ = db.command;
+
+    // 获取今天的开始和结束时间
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    db.collection('memos')
+      .where({
+        isDeleted: _.neq(true),
+        isCompleted: false,  // 只显示未完成的
+        reminderTime: _.gte(today).and(_.lt(tomorrow))
+      })
+      .orderBy('reminderTime', 'asc')
+      .get({
+        success: (res) => {
+          console.log('加载今日待办成功', res);
+
+          const memos = res.data.map(memo => {
+            return {
+              ...memo,
+              reminderTimeStr: this.formatTime(memo.reminderTime)
+            };
+          });
+
+          // 只显示前3条
+          const displayMemos = memos.slice(0, 3);
+
+          this.setData({
+            todayMemos: memos,
+            displayMemos: displayMemos
+          });
+        },
+        fail: (err) => {
+          console.error('加载今日待办失败', err);
+          // 不显示错误提示，避免影响用户体验
+          this.setData({
+            todayMemos: [],
+            displayMemos: []
+          });
+        }
+      });
+  },
+
+  // 折叠/展开卡片
+  toggleMemoCard() {
+    this.setData({
+      memoCardExpanded: !this.data.memoCardExpanded
+    });
+  },
+
+  // 跳转到备忘录列表
+  goToMemoList() {
+    wx.navigateTo({
+      url: '/pages/memo-list/memo-list'
+    });
+  },
+
+  // 跳转到备忘录编辑页
+  goToMemoEdit(e) {
+    const id = e.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: `/pages/memo-edit/memo-edit?id=${id}`
+    });
+  },
+
+  // 快速完成
+  quickComplete(e) {
+    const id = e.currentTarget.dataset.id;
+    const isCompleted = e.currentTarget.dataset.completed;
+
+    console.log('快速完成', id, isCompleted);
+
+    const db = wx.cloud.database();
+
+    wx.showLoading({
+      title: '处理中...',
+      mask: true
+    });
+
+    db.collection('memos')
+      .doc(id)
+      .update({
+        data: {
+          isCompleted: !isCompleted,
+          completedTime: !isCompleted ? new Date() : null,
+          updateTime: new Date()
+        },
+        success: () => {
+          wx.hideLoading();
+          wx.showToast({
+            title: !isCompleted ? '已完成' : '已取消',
+            icon: 'success',
+            duration: 1500
+          });
+
+          // 刷新今日待办
+          this.loadTodayMemos();
+        },
+        fail: (err) => {
+          console.error('操作失败', err);
+          wx.hideLoading();
+          wx.showToast({
+            title: '操作失败',
+            icon: 'none'
+          });
+        }
+      });
   }
 });

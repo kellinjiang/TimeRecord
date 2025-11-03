@@ -6,6 +6,47 @@
     <text class="current-date">{{currentDate}}</text>
   </view>
 
+  <!-- 今日待办卡片 -->
+  <view class="memo-card" wx:if="{{todayMemos.length > 0}}">
+    <view class="memo-card-header" bindtap="toggleMemoCard">
+      <view class="memo-card-title">
+        <text class="memo-icon">📝</text>
+        <text class="memo-title-text">今日待办</text>
+        <text class="memo-count">({{todayMemos.length}})</text>
+      </view>
+      <view class="memo-card-action">
+        <text class="action-text" catchtap="goToMemoList">查看全部</text>
+        <text class="expand-arrow {{memoCardExpanded ? 'expanded' : ''}}">▼</text>
+      </view>
+    </view>
+
+    <!-- 展开的待办列表 -->
+    <view class="memo-card-content" wx:if="{{memoCardExpanded}}">
+      <view
+        class="memo-card-item {{item.isCompleted ? 'completed' : ''}}"
+        wx:for="{{displayMemos}}"
+        wx:key="_id"
+        bindtap="goToMemoEdit"
+        data-id="{{item._id}}"
+      >
+        <view class="memo-item-left">
+          <view class="memo-item-time">{{item.reminderTimeStr}}</view>
+          <view class="memo-item-title">{{item.title}}</view>
+        </view>
+        <view class="memo-item-right">
+          <view
+            class="memo-check-btn {{item.isCompleted ? 'checked' : ''}}"
+            catchtap="quickComplete"
+            data-id="{{item._id}}"
+            data-completed="{{item.isCompleted}}"
+          >
+            <text class="check-icon">{{item.isCompleted ? '✓' : ''}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
   <!-- 中央录音按钮区域 -->
   <view class="record-area">
     <view class="record-btn {{isRecording ? 'recording' : ''}}"

@@ -1,0 +1,185 @@
+<!--pages/memo-list/memo-list.wxml-->
+<view class="container">
+  <!-- 顶部筛选 -->
+  <view class="filter-bar">
+    <view
+      class="filter-item {{filterType === 'all' ? 'active' : ''}}"
+      bindtap="onFilterChange"
+      data-type="all"
+    >
+      全部
+    </view>
+    <view
+      class="filter-item {{filterType === 'pending' ? 'active' : ''}}"
+      bindtap="onFilterChange"
+      data-type="pending"
+    >
+      未完成
+    </view>
+    <view
+      class="filter-item {{filterType === 'completed' ? 'active' : ''}}"
+      bindtap="onFilterChange"
+      data-type="completed"
+    >
+      已完成
+    </view>
+  </view>
+
+  <!-- 备忘录列表 -->
+  <scroll-view class="memo-scroll" scroll-y enable-back-to-top>
+    <!-- 今天 -->
+    <view class="time-group" wx:if="{{todayMemos.length > 0}}">
+      <view class="group-title">📅 今天 ({{todayMemos.length}})</view>
+      <view class="memo-list">
+        <view
+          class="memo-item {{item.isCompleted ? 'completed' : ''}}"
+          wx:for="{{todayMemos}}"
+          wx:key="_id"
+          bindtap="goToEdit"
+          data-id="{{item._id}}"
+        >
+          <view class="memo-left">
+            <view class="priority-badge priority-{{item.priority}}">
+              {{item.priorityLabel}}
+            </view>
+            <view class="memo-info">
+              <view class="memo-time">{{item.reminderTimeStr}}</view>
+              <view class="memo-title">{{item.title}}</view>
+              <view class="memo-content" wx:if="{{item.content}}">{{item.content}}</view>
+            </view>
+          </view>
+          <view class="memo-right">
+            <view
+              class="check-btn {{item.isCompleted ? 'checked' : ''}}"
+              catchtap="toggleComplete"
+              data-id="{{item._id}}"
+              data-completed="{{item.isCompleted}}"
+            >
+              <text class="check-icon">{{item.isCompleted ? '✓' : ''}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 明天 -->
+    <view class="time-group" wx:if="{{tomorrowMemos.length > 0}}">
+      <view class="group-title">📅 明天 ({{tomorrowMemos.length}})</view>
+      <view class="memo-list">
+        <view
+          class="memo-item {{item.isCompleted ? 'completed' : ''}}"
+          wx:for="{{tomorrowMemos}}"
+          wx:key="_id"
+          bindtap="goToEdit"
+          data-id="{{item._id}}"
+        >
+          <view class="memo-left">
+            <view class="priority-badge priority-{{item.priority}}">
+              {{item.priorityLabel}}
+            </view>
+            <view class="memo-info">
+              <view class="memo-time">{{item.reminderTimeStr}}</view>
+              <view class="memo-title">{{item.title}}</view>
+              <view class="memo-content" wx:if="{{item.content}}">{{item.content}}</view>
+            </view>
+          </view>
+          <view class="memo-right">
+            <view
+              class="check-btn {{item.isCompleted ? 'checked' : ''}}"
+              catchtap="toggleComplete"
+              data-id="{{item._id}}"
+              data-completed="{{item.isCompleted}}"
+            >
+              <text class="check-icon">{{item.isCompleted ? '✓' : ''}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 本周 -->
+    <view class="time-group" wx:if="{{thisWeekMemos.length > 0}}">
+      <view class="group-title">📅 本周 ({{thisWeekMemos.length}})</view>
+      <view class="memo-list">
+        <view
+          class="memo-item {{item.isCompleted ? 'completed' : ''}}"
+          wx:for="{{thisWeekMemos}}"
+          wx:key="_id"
+          bindtap="goToEdit"
+          data-id="{{item._id}}"
+        >
+          <view class="memo-left">
+            <view class="priority-badge priority-{{item.priority}}">
+              {{item.priorityLabel}}
+            </view>
+            <view class="memo-info">
+              <view class="memo-time">{{item.reminderDateStr}} {{item.reminderTimeStr}}</view>
+              <view class="memo-title">{{item.title}}</view>
+              <view class="memo-content" wx:if="{{item.content}}">{{item.content}}</view>
+            </view>
+          </view>
+          <view class="memo-right">
+            <view
+              class="check-btn {{item.isCompleted ? 'checked' : ''}}"
+              catchtap="toggleComplete"
+              data-id="{{item._id}}"
+              data-completed="{{item.isCompleted}}"
+            >
+              <text class="check-icon">{{item.isCompleted ? '✓' : ''}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 未来 -->
+    <view class="time-group" wx:if="{{futureMemos.length > 0}}">
+      <view class="group-title">📅 未来 ({{futureMemos.length}})</view>
+      <view class="memo-list">
+        <view
+          class="memo-item {{item.isCompleted ? 'completed' : ''}}"
+          wx:for="{{futureMemos}}"
+          wx:key="_id"
+          bindtap="goToEdit"
+          data-id="{{item._id}}"
+        >
+          <view class="memo-left">
+            <view class="priority-badge priority-{{item.priority}}">
+              {{item.priorityLabel}}
+            </view>
+            <view class="memo-info">
+              <view class="memo-time">{{item.reminderDateStr}} {{item.reminderTimeStr}}</view>
+              <view class="memo-title">{{item.title}}</view>
+              <view class="memo-content" wx:if="{{item.content}}">{{item.content}}</view>
+            </view>
+          </view>
+          <view class="memo-right">
+            <view
+              class="check-btn {{item.isCompleted ? 'checked' : ''}}"
+              catchtap="toggleComplete"
+              data-id="{{item._id}}"
+              data-completed="{{item.isCompleted}}"
+            >
+              <text class="check-icon">{{item.isCompleted ? '✓' : ''}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{memoList.length === 0}}">
+      <view class="empty-icon">📝</view>
+      <view class="empty-text">暂无备忘录</view>
+      <view class="empty-tip">点击右下角添加新备忘录</view>
+    </view>
+
+    <!-- 底部占位 -->
+    <view style="height: 100rpx;"></view>
+  </scroll-view>
+
+  <!-- 新增按钮 -->
+  <view class="add-btn" bindtap="goToAdd">
+    <text class="add-icon">+</text>
+  </view>
+</view>

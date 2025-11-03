@@ -7,11 +7,13 @@ Page({
     // 基本信息
     content: '',
     startTime: '',
+    endTime: '',  // 结束时间
     audioPath: '',
 
     // 编辑模式
     recordId: null,  // 记录ID（编辑模式下使用）
     isEditMode: false,  // 是否为编辑模式
+    originalStartTime: null,  // 原始记录的开始时间（Date对象，用于编辑模式）
 
     // 标签数据
     quickTags: [],  // 快速标签（前6个）
@@ -103,11 +105,22 @@ Page({
           const minutes = String(startTime.getMinutes()).padStart(2, '0');
           const startTimeStr = `${hours}:${minutes}`;
 
+          // 格式化结束时间
+          let endTimeStr = '';
+          if (record.endTime) {
+            const endTime = new Date(record.endTime);
+            const endHours = String(endTime.getHours()).padStart(2, '0');
+            const endMinutes = String(endTime.getMinutes()).padStart(2, '0');
+            endTimeStr = `${endHours}:${endMinutes}`;
+          }
+
           // 设置基本信息
           this.setData({
             content: record.content || '',
             startTime: startTimeStr,
-            audioPath: record.audioPath || ''
+            endTime: endTimeStr,
+            audioPath: record.audioPath || '',
+            originalStartTime: record.startTime  // 保存原始开始时间
           });
 
           // 等待标签加载完成后设置选中状态
@@ -267,10 +280,45 @@ Page({
       });
   },
 
-  // 时间改变
-  onTimeChange(e) {
+  // 开始时间改变
+  onStartTimeChange(e) {
     this.setData({
       startTime: e.detail.value
+    });
+  },
+
+  // 结束时间改变
+  onEndTimeChange(e) {
+    const endTime = e.detail.value;
+    const startTime = this.data.startTime;
+
+    // 验证结束时间不能早于开始时间
+    if (startTime && endTime < startTime) {
+      wx.showToast({
+        title: '结束时间不能早于开始时间',
+        icon: 'none',
+        duration: 2000
+      });
+      return;
+    }
+
+    this.setData({
+      endTime: endTime
+    });
+  },
+
+  // 清除结束时间
+  clearEndTime() {
+    wx.showModal({
+      title: '提示',
+      content: '确定要清除结束时间吗？',
+      success: (res) => {
+        if (res.confirm) {
+          this.setData({
+            endTime: ''
+          });
+        }
+      }
     });
   },
 
@@ -427,10 +475,44 @@ Page({
       .filter(tag => tag.selected)
       .map(tag => ({ name: tag.name, icon: tag.icon, color: tag.color }));
 
+    // 解析开始时间
+    let startTimeDate;
+    if (this.data.isEditMode && this.data.originalStartTime) {
+      // 编辑模式：基于原记录的日期
+      console.log('========== 编辑模式：保持原记录日期 ==========');
+      console.log('原始 startTime:', new Date(this.data.originalStartTime));
+      console.log('用户修改的时间:', this.data.startTime);
+
+      startTimeDate = this.parseTime(this.data.startTime, this.data.originalStartTime);
+
+      console.log('解析后的 startTime:', startTimeDate);
+      console.log('日期是否保持不变:',
+        new Date(this.data.originalStartTime).toDateString() === startTimeDate.toDateString()
+      );
+    } else {
+      // 新建模式：使用当前日期
+      console.log('========== 新建模式：使用当前日期 ==========');
+      startTimeDate = this.parseTime(this.data.startTime);
+      console.log('解析后的 startTime:', startTimeDate);
+    }
+
+    // 解析结束时间（基于开始时间的日期）
+    let endTimeDate = null;
+    if (this.data.endTime) {
+      // 使用开始时间的日期作为基准
+      endTimeDate = this.parseTime(this.data.endTime, startTimeDate);
+
+      // 如果结束时间早于或等于开始时间，说明跨天了，将结束时间加一天
+      if (endTimeDate <= startTimeDate) {
+        endTimeDate.setDate(endTimeDate.getDate() + 1);
+      }
+    }
+
     // 构建日记对象
     const record = {
       content: this.data.content.trim(),
-      startTime: this.parseTime(this.data.startTime),
+      startTime: startTimeDate,
+      endTime: endTimeDate,
       tags: selectedTags,
       audioPath: this.data.audioPath,
       source: 'voice'
@@ -449,14 +531,15 @@ Page({
   },
 
   // 解析时间字符串为 Date 对象
-  parseTime(timeStr) {
-    const now = new Date();
+  parseTime(timeStr, baseDate) {
+    // 如果提供了基准日期，使用基准日期；否则使用当前日期
+    const date = baseDate ? new Date(baseDate) : new Date();
     const [hours, minutes] = timeStr.split(':');
-    now.setHours(parseInt(hours));
-    now.setMinutes(parseInt(minutes));
-    now.setSeconds(0);
-    now.setMilliseconds(0);
-    return now;
+    date.setHours(parseInt(hours));
+    date.setMinutes(parseInt(minutes));
+    date.setSeconds(0);
+    date.setMilliseconds(0);
+    return date;
   },
 
   // 保存到云数据库
@@ -473,6 +556,7 @@ Page({
           data: {
             content: record.content,
             startTime: record.startTime,
+            endTime: record.endTime,
             tags: record.tags,
             updateTime: new Date()
           },
@@ -587,17 +671,18 @@ Page({
       const _ = db.command;
 
       // 计算当天的开始和结束时间
-      const startTime = new Date(currentRecord.startTime);
-      const dayStart = new Date(startTime);
-      dayStart.setHours(0, 0, 0, 0);
+      const currentStartTime = new Date(currentRecord.startTime);
+      const todayStart = new Date(currentStartTime);
+      todayStart.setHours(0, 0, 0, 0);
 
-      const dayEnd = new Date(startTime);
-      dayEnd.setHours(23, 59, 59, 999);
+      // 计算昨天的开始时间
+      const yesterdayStart = new Date(todayStart);
+      yesterdayStart.setDate(yesterdayStart.getDate() - 1);
 
-      // 查询同一天且开始时间早于当前记录的所有记录
+      // 查询昨天和今天早于当前记录的所有记录
       db.collection('records')
         .where({
-          startTime: _.gte(dayStart).and(_.lt(currentRecord.startTime)),
+          startTime: _.gte(yesterdayStart).and(_.lt(currentRecord.startTime)),
           isDeleted: _.neq(true)
         })
         .orderBy('startTime', 'desc')  // 按时间倒序排列
@@ -605,10 +690,75 @@ Page({
         .get({
           success: (res) => {
             if (res.data.length > 0) {
-              // 找到前一条记录，更新其结束时间
+              // 找到前一条记录
               const previousRecord = res.data[0];
+              const previousStartTime = new Date(previousRecord.startTime);
               console.log('找到前一条记录', previousRecord);
 
+              // 检查前一条记录的日期
+              const prevDayStart = new Date(previousStartTime);
+              prevDayStart.setHours(0, 0, 0, 0);
+
+              // 判断前一条记录是否是昨天的
+              const isYesterday = prevDayStart.getTime() < todayStart.getTime();
+
+              if (isYesterday) {
+                // 检查是否是睡觉相关的记录
+                const sleepKeywords = ['睡觉', '睡眠', '休息', '就寝', '入睡', '睡', '困'];
+                const isSleepRecord = sleepKeywords.some(keyword =>
+                  previousRecord.content.includes(keyword)
+                );
+
+                if (isSleepRecord) {
+                  console.log('检测到跨天睡眠记录，执行自动填充');
+
+                  // 1. 将昨天的记录结束时间设为24:00（即今天00:00）
+                  const yesterdayEnd = new Date(todayStart);
+
+                  db.collection('records')
+                    .doc(previousRecord._id)
+                    .update({
+                      data: {
+                        endTime: yesterdayEnd,
+                        updateTime: new Date()
+                      },
+                      success: () => {
+                        console.log('✅ 已将昨天睡眠记录结束时间更新为24:00');
+
+                        // 2. 创建今天凌晨的睡眠记录
+                        db.collection('records').add({
+                          data: {
+                            content: '睡觉（自动填充）',
+                            startTime: todayStart,  // 今天00:00
+                            endTime: currentRecord.startTime,  // 当前记录开始时间
+                            tags: previousRecord.tags || [],
+                            source: 'auto',
+                            createTime: new Date(),
+                            updateTime: new Date(),
+                            isDeleted: false
+                          },
+                          success: () => {
+                            console.log('✅ 已自动创建今天凌晨睡眠记录');
+                            resolve();
+                          },
+                          fail: (err) => {
+                            console.error('创建凌晨睡眠记录失败', err);
+                            // 即使创建失败也继续
+                            resolve();
+                          }
+                        });
+                      },
+                      fail: (err) => {
+                        console.error('更新昨天睡眠记录失败', err);
+                        reject(err);
+                      }
+                    });
+
+                  return;
+                }
+              }
+
+              // 如果不是跨天睡眠记录，按原逻辑处理
               db.collection('records')
                 .doc(previousRecord._id)
                 .update({
@@ -626,9 +776,69 @@ Page({
                   }
                 });
             } else {
-              // 没有找到前一条记录，直接继续
-              console.log('没有找到前一条记录');
-              resolve();
+              // 没有找到前一条记录，检查是否需要从00:00开始创建睡眠记录
+              console.log('没有找到前一条记录，检查是否需要从00:00创建睡眠记录');
+
+              // 如果当前记录不是从00:00开始，检查昨天是否有睡眠记录
+              if (currentStartTime.getTime() > todayStart.getTime()) {
+                // 查询昨天晚上22:00之后的记录
+                const yesterdayEvening = new Date(yesterdayStart);
+                yesterdayEvening.setHours(22, 0, 0, 0);
+
+                db.collection('records')
+                  .where({
+                    startTime: _.gte(yesterdayEvening).and(_.lt(todayStart)),
+                    isDeleted: _.neq(true)
+                  })
+                  .orderBy('startTime', 'desc')
+                  .limit(1)
+                  .get({
+                    success: (lastRes) => {
+                      if (lastRes.data.length > 0) {
+                        const lastRecord = lastRes.data[0];
+                        const sleepKeywords = ['睡觉', '睡眠', '休息', '就寝', '入睡', '睡', '困'];
+                        const isSleepRecord = sleepKeywords.some(keyword =>
+                          lastRecord.content.includes(keyword)
+                        );
+
+                        if (isSleepRecord) {
+                          console.log('昨晚有睡眠记录，创建今天凌晨睡眠记录');
+
+                          // 创建今天凌晨的睡眠记录
+                          db.collection('records').add({
+                            data: {
+                              content: '睡觉（自动填充）',
+                              startTime: todayStart,
+                              endTime: currentRecord.startTime,
+                              tags: lastRecord.tags || [],
+                              source: 'auto',
+                              createTime: new Date(),
+                              updateTime: new Date(),
+                              isDeleted: false
+                            },
+                            success: () => {
+                              console.log('✅ 已自动创建今天凌晨睡眠记录');
+                              resolve();
+                            },
+                            fail: (err) => {
+                              console.error('创建凌晨睡眠记录失败', err);
+                              resolve();
+                            }
+                          });
+                        } else {
+                          resolve();
+                        }
+                      } else {
+                        resolve();
+                      }
+                    },
+                    fail: () => {
+                      resolve();
+                    }
+                  });
+              } else {
+                resolve();
+              }
             }
           },
           fail: (err) => {
